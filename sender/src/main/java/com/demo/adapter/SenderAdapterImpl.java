@@ -18,15 +18,16 @@ public class SenderAdapterImpl implements SenderAdapter {
 //    @GrpcClient("receive-service")
 //    private ReceiveServiceGrpc.ReceiveServiceBlockingStub receiveServiceBlockingStub;
 
+    @GrpcClient("receive-service")
     private static ReactorReceiveServiceGrpc.ReactorReceiveServiceStub stub;
 
     @PostConstruct
     public static void setup() throws Exception {
-        var channel = ManagedChannelBuilder
-                .forAddress("localhost", 8001)
-                .usePlaintext()
-                .build();
-        stub = ReactorReceiveServiceGrpc.newReactorStub(channel);
+//        var channel = ManagedChannelBuilder
+//                .forAddress("localhost", 8001)
+//                .usePlaintext()
+//                .build();
+//        stub = ReactorReceiveServiceGrpc.newReactorStub(channel);
     }
 
     @Override
