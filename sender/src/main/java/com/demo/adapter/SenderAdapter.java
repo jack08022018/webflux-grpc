@@ -1,11 +1,9 @@
-package com.example.adapter;
+package com.demo.adapter;
 
-import com.sender.HelloRequest;
-import com.sender.HelloResponse;
-import com.sender.TransactionRequest;
-import com.sender.TransactionResponse;
+import grpc.TransactionRequest;
+import grpc.TransactionResponse;
+import reactor.core.publisher.Mono;
 
 public interface SenderAdapter {
-    TransactionResponse deduct(TransactionRequest request);
-    HelloResponse hello(HelloRequest request);
+    Mono<TransactionResponse> deduct(TransactionRequest request);
 }

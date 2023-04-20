@@ -12,7 +12,7 @@ message TransactionResponse {
   string result = 1;
 }
 
-service SenderService {
+service ReceiveService {
   rpc deduct(TransactionRequest) returns (TransactionResponse);
   rpc refund(TransactionRequest) returns (TransactionResponse);
 }

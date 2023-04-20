@@ -1,22 +1,16 @@
-server:
-  port: 9298
-  undertow.max-http-post-size: 0
-  error:
-    include-message: always
-spring:
-  webflux.base-path: /sender
-  application.name: sender
-  main.allow-bean-definition-overriding: true
-  jackson.default-property-inclusion: non_absent
+#server:
+#  port: 9298
+#  undertow.max-http-post-size: 0
+#  error:
+#    include-message: always
+#spring:
+#  webflux.base-path: /sender
+#  application.name: sender
+#  main.allow-bean-definition-overriding: true
+#  jackson.default-property-inclusion: non_absent
 
 grpc:
-  server.port: 8000
-  client:
-    receive-service:
-      address: 'static://localhost:8001'
-      enableKeepAlive: true
-      keepAliveWithoutCalls: true
-      negotiationType: plaintext
+  server.port: 8001
 
 logging:
   level:

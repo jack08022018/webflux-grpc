@@ -6,8 +6,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import javax.annotation.PostConstruct;
 
-@Setter @Getter
-@ConfigurationProperties(prefix = "datasource")
+//@Setter @Getter
+//@ConfigurationProperties(prefix = "datasource")
 public class DatasourceProperties {
     private DBConfig mssql;
     private DBConfig mariadb;
