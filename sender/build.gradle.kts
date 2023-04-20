@@ -31,8 +31,7 @@ dependencies {
 	implementation("io.grpc:grpc-stub:1.35.0")
 	implementation("io.grpc:grpc-netty:1.35.0")
 	implementation("io.grpc:grpc-services:1.35.0")
-//	implementation ("com.salesforce.servicelibs:rxgrpc-stub:1.2.3")
-	implementation ("com.salesforce.servicelibs:reactor-grpc-stub:1.2.3")
+	implementation ("com.salesforce.servicelibs:reactor-grpc-stub:1.2.4")
 
 	implementation("org.apache.commons:commons-lang3:3.12.0")
 	implementation("com.google.code.gson:gson:2.10.1")
@@ -41,7 +40,6 @@ dependencies {
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 	annotationProcessor("org.projectlombok:lombok")
-//	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	implementation("org.springframework.boot:spring-boot-starter-logging:3.0.1")
 	implementation("org.springframework.boot:spring-boot-starter-log4j2:3.0.1")
 }
@@ -53,11 +51,8 @@ protobuf {
 		id("grpc") {
 			artifact = "io.grpc:protoc-gen-grpc-java:1.39.0"
 		}
-//		id("rxgrpc") {
-//			artifact = "com.salesforce.servicelibs:rxgrpc:1.2.3"
-//		}
 		id("reactor") {
-			artifact = "com.salesforce.servicelibs:reactor-grpc:1.2.3"
+			artifact = "com.salesforce.servicelibs:reactor-grpc:1.2.4"
 		}
 	}
 	generatedFilesBaseDir = "generated-sources"
@@ -65,7 +60,6 @@ protobuf {
 		ofSourceSet("main").forEach {
 			it.plugins {
 				id("grpc")
-//				id("rxgrpc")
 				id("reactor")
 			}
 		}
