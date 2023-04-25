@@ -13,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.server.service.GrpcService;
 
+import java.util.concurrent.TimeUnit;
+
 @Slf4j
 @GrpcService
 @RequiredArgsConstructor
@@ -29,8 +31,11 @@ public class ReceiveServiceImpl extends ReceiveServiceGrpc.ReceiveServiceImplBas
     @Override
     public void deduct(TransactionRequest dto, StreamObserver<TransactionResponse> responseObserver) {
         log.info("REQUEST: {}", gson.toJson(dto));
+        try {
+            TimeUnit.SECONDS.sleep(2);
+        }catch (Exception e){}
         TransactionResponse response = TransactionResponse.newBuilder()
-                .setResult("success!")
+                .setResult("success: " + dto.getAccountId())
                 .build();
         responseObserver.onNext(response);
         responseObserver.onCompleted();

@@ -8,6 +8,33 @@ spring:
   application.name: sender
   main.allow-bean-definition-overriding: true
   jackson.default-property-inclusion: non_absent
+temporal:
+  server: 127.0.0.1:7233
+  #  namespace: 'os-dev'
+  isUseSsl: false
+  workflowTaskTimeoutConfig: 1
+  workflowExecutionTimeout: 30
+  #default activity
+  defaultActivityStartToCloseTimeout: 15 #second
+  defaultActivityMaximumRetryAttempts: 50
+  #default local activity
+  defaultLocalActivityStartToCloseTimeout: 15 #second
+  defaultLocalActivityMaximumRetryAttempts: 9999
+  defaultLocalActivityRetryInterval: 10 #millisec
+  worker:
+    maxConcurrentActivityTaskPollers: 25 #default 5
+    maxConcurrentWorkflowTaskPollers: 10 #default 2
+    maxConcurrentActivityExecutionSize: 200 #default 200
+    maxConcurrentWorkflowTaskExecutionSize: 200 #default 200
+    maxConcurrentLocalActivityExecutionSize: 200 #default 200
+    maxWorkerActivitiesPerSecond: 0 #default 0 means unlimited
+    maxTaskQueueActivitiesPerSecond: 0 #default 0 means unlimited
+  workerFactory:
+    maxWorkfLowThreadCount: 600 #defautt 600
+    workflowHostLocalPollThreadCount: 5 #default 5
+  prometheus:
+    port: 9790
+    sleep: 3000
 
 grpc:
   server.port: 8000
