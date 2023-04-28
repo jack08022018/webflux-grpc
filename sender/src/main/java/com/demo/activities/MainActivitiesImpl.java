@@ -1,6 +1,7 @@
 package com.demo.activities;
 
 import com.demo.adapter.MainAdapter;
+import com.demo.dto.ActivityResult;
 import com.google.gson.Gson;
 import grpc.TransactionRequest;
 import grpc.TransactionResponse;
@@ -20,13 +21,18 @@ public class MainActivitiesImpl implements MainActivities {
     }
 
     @Override
-    public Mono<TransactionResponse> deduct(TransactionRequest request) {
+    public Mono<TransactionResponse> deduct() {
         System.out.println("AAA");
-        return mainAdapter.deduct(request);
+        return mainAdapter.deduct("id1");
 //        ActivityExecutionContext context = Activity.getExecutionContext();
 //        byte[] taskToken = context.getTaskToken();
 //        context.doNotCompleteOnReturn();
 //        ForkJoinPool.commonPool().execute(() -> composeGreetingAsync(taskToken, "greeting!"));
+    }
+
+    @Override
+    public Mono<ActivityResult> deductHttp() {
+        return mainAdapter.deductHttp("id1");
     }
 
     @Override

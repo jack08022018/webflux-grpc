@@ -28,32 +28,27 @@ public class SenderController {
 
     @GetMapping("/callGrpc")
     public Mono<TransactionResponse> callGrpc() {
+        return mainAdapter.deduct("id1");
+    }
+
+    @GetMapping("/flowBlocking")
+    public ActivityResult flowBlocking() throws Exception {
         var request = TransactionRequest.newBuilder()
                 .setTransactionId("1111")
                 .setAccountId("aaaa")
                 .build();
-        return mainAdapter.deduct(request);
+        return senderService.blocking(request);
     }
 
-    @GetMapping("/test")
-    public Mono<ActivityResult> test() throws Exception {
-        var request = TransactionRequest.newBuilder()
-                .setTransactionId("1111")
-                .setAccountId("aaaa")
-                .build();
-        return senderService.test(request);
+    @GetMapping("/flowNonBlocking")
+    public Mono<ActivityResult> flowNonBlocking() throws Exception {
+        return senderService.nonBlocking();
     }
 
-    @GetMapping("/nonBlocking")
+    @GetMapping("/grpcNonBlocking")
     public Mono<ModelMap> nonBlocking() throws Exception {
-        var request1 = mainAdapter.deduct(TransactionRequest.newBuilder()
-                .setTransactionId("1111")
-                .setAccountId("id1")
-                .build());
-        var request2 = mainAdapter.deduct(TransactionRequest.newBuilder()
-                .setTransactionId("1111")
-                .setAccountId("id2")
-                .build());
+        var request1 = mainAdapter.deduct("id1");
+        var request2 = mainAdapter.deduct("id2");
         return Mono.zip(request1, request2)
                 .map(tuple -> {
                     var result = new ModelMap();
@@ -61,15 +56,6 @@ public class SenderController {
                     result.put("request2", tuple.getT2().getResult());
                     return result;
                 });
-    }
-
-    @GetMapping("/blocking")
-    public ActivityResult blocking() throws Exception {
-        var request = TransactionRequest.newBuilder()
-                .setTransactionId("1111")
-                .setAccountId("aaaa")
-                .build();
-        return senderService.blocking(request);
     }
 
 }

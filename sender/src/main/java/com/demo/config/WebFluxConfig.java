@@ -33,7 +33,7 @@ public class WebFluxConfig implements WebFluxConfigurer {
         ClientHttpConnector connector = new ReactorClientHttpConnector(httpClient.wiretap(true));
 
         return WebClient.builder()
-                .baseUrl("http://localhost:9199/ibmmq-consumer")
+                .baseUrl("http://localhost:9398")
                 .clientConnector(connector)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();

@@ -9,10 +9,10 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 public class ReceiveApplication {
 
 	public static void main(String[] args) {
-//		SpringApplication.run(ReceiveApplication.class, args);
-		new SpringApplicationBuilder(ReceiveApplication.class)
-			.web(WebApplicationType.NONE)
-			.run(args);
+		SpringApplication.run(ReceiveApplication.class, args);
+//		new SpringApplicationBuilder(ReceiveApplication.class)
+//			.web(WebApplicationType.NONE)
+//			.run(args);
 	}
 
 }

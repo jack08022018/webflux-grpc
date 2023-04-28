@@ -1,6 +1,6 @@
-#server:
-#  port: 9298
-#  undertow.max-http-post-size: 0
+server:
+  port: 9398
+  undertow.max-http-post-size: 0
 #  error:
 #    include-message: always
 #spring:

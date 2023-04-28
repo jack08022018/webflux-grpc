@@ -10,7 +10,10 @@ import reactor.core.publisher.Mono;
 @ActivityInterface
 public interface MainActivities {
     @ActivityMethod
-    Mono<TransactionResponse> deduct(TransactionRequest request);
+    Mono<TransactionResponse> deduct();
+
+    @ActivityMethod
+    Mono<ActivityResult> deductHttp();
 
     @ActivityMethod
     TransactionResponse blocking(TransactionRequest request);

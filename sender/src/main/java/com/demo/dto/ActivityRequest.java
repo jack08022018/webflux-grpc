@@ -1,11 +1,9 @@
 package com.demo.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 @Builder
 @Getter @Setter
@@ -13,8 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 //@JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ActivityResult implements Serializable {
-    private String responseCode;
-    private String description;
-    private String jsonData;
+public class ActivityRequest implements Serializable {
+    private String transactionId;
+    private String accountId;
 }

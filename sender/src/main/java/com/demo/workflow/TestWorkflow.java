@@ -9,6 +9,6 @@ import reactor.core.publisher.Mono;
 @WorkflowInterface
 public interface TestWorkflow {
     @WorkflowMethod
-    Mono<ActivityResult> test(TransactionRequest dto) throws Exception;
+    Mono<ActivityResult> nonBlocking() throws Exception;
 
 }

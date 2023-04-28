@@ -24,10 +24,11 @@ public class TestWorkflowImpl implements TestWorkflow {
     private final MainActivities mainActivities = Workflow.newActivityStub(MainActivities.class, activityOptions);
 
     @Override
-    public Mono<ActivityResult> test(TransactionRequest dto) throws Exception {
-        return mainActivities.deduct(dto)
-                .map(s -> ActivityResult.builder()
-                        .jsonData(s.getResult())
-                        .build());
+    public Mono<ActivityResult> nonBlocking() throws Exception {
+        return mainActivities.deductHttp();
+//        return mainActivities.deduct()
+//                .map(s -> ActivityResult.builder()
+//                        .jsonData(s.getResult())
+//                        .build());
     }
 }

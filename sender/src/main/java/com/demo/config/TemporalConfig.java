@@ -38,7 +38,7 @@ public class TemporalConfig {
 //                        .build());
 //        var option = WorkflowClientOptions.newBuilder()
 ////                .setNamespace("default")
-//                .setDataConverter(new MyDataConverter())
+//                .setDataConverter(new MyCustomDataConverter())
 //                .build();
 //        return WorkflowClient.newInstance(service, option);
     }

@@ -25,10 +25,7 @@ dependencies {
     implementation 'net.devh:grpc-server-spring-boot-starter:2.14.0.RELEASE'
     implementation 'net.devh:grpc-client-spring-boot-starter:2.14.0.RELEASE'
     implementation 'com.salesforce.servicelibs:reactor-grpc-stub:1.2.3'
-    implementation "io.grpc:grpc-protobuf:1.35.0"
-    implementation "io.grpc:grpc-stub:1.35.0"
-    implementation "io.grpc:grpc-netty:1.35.0"
-    implementation "io.grpc:grpc-services:1.35.0"
+    implementation 'com.google.protobuf:protobuf-java-util:3.17.2'
 
     implementation 'org.apache.commons:commons-lang3:3.12.0'
     implementation 'com.google.code.gson:gson:2.10.1'
@@ -48,14 +45,14 @@ sourceSets {
 }
 protobuf {
     protoc {
-        artifact = "com.google.protobuf:protoc:3.17.2"
+        artifact = "com.google.protobuf:protoc:3.21.1"
     }
     plugins {
         grpc {
             artifact = "io.grpc:protoc-gen-grpc-java:1.39.0"
         }
-        reactor {
-            artifact = "com.salesforce.servicelibs:reactor-grpc:1.2.3"
+        reactorGrpc {
+            artifact = 'com.salesforce.servicelibs:reactor-grpc:1.2.3'
         }
     }
     clean {
@@ -64,7 +61,7 @@ protobuf {
     generateProtoTasks {
         all()*.plugins {
             grpc {}
-            reactor {}
+            reactorGrpc {}
         }
     }
 }
