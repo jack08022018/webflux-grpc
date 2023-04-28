@@ -1,0 +1,16 @@
+syntax = "proto3";
+option java_multiple_files = true;
+package grpc;
+
+message SignalRequest {
+  string workflowId = 1;
+  string activityId = 2;
+  string jsonData = 3;
+}
+message SignalResponse {
+  string result = 1;
+}
+
+service SignalService {
+  rpc signal(SignalRequest) returns (SignalResponse);
+}

@@ -1,0 +1,19 @@
+syntax = "proto3";
+option java_multiple_files = true;
+package grpc;
+
+service ReceiveService {
+  rpc deduct(ReceiveGrpcRequest) returns (ReceiveGrpcResponse);
+}
+
+message ReceiveGrpcRequest {
+  string workflowId = 1;
+  string activityId = 2;
+  string jsonData = 3;
+}
+message ReceiveGrpcResponse {
+  string responseCode = 1;
+  string description = 2;
+  string jsonData = 3;
+}
+

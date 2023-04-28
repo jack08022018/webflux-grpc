@@ -1,0 +1,20 @@
+
+spring:
+  activemq:
+    broker-url: tcp://localhost:61616
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: DEBUG
+    org.springframework.web.FilterChainProxy: DEBUG
+    org.springframework.web.client.RestTemplate: DEBUG
+    org.springframework.security: DEBUG
+    org.springframework.boot.autoconfigure: INFO
+
+    org.hibernate.SQL: DEBUG
+#    org.hibernate.type.descriptor.sql: trace
+#    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+#    org.springframework.data.r2dbc: DEBUG
+#    io.r2dbc.mariadb.QUERY: DEBUG # for queries
+#    io.r2dbc.mariadb.PARAM: DEBUG # for parameters

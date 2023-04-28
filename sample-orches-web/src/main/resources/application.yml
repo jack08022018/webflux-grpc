@@ -1,0 +1,62 @@
+server:
+  port: 9298
+  servlet.context-path: /sender
+  undertow.max-http-post-size: 0
+spring:
+  application.name: sender
+  main.allow-bean-definition-overriding: true
+  jackson.default-property-inclusion: non_absent
+temporal:
+  server: 127.0.0.1:7233
+  #  namespace: 'os-dev'
+  isUseSsl: false
+  workflowTaskTimeoutConfig: 1
+  workflowExecutionTimeout: 30
+  #default activity
+  defaultActivityStartToCloseTimeout: 15 #second
+  defaultActivityMaximumRetryAttempts: 50
+  #default local activity
+  defaultLocalActivityStartToCloseTimeout: 15 #second
+  defaultLocalActivityMaximumRetryAttempts: 9999
+  defaultLocalActivityRetryInterval: 10 #millisec
+  worker:
+    maxConcurrentActivityTaskPollers: 25 #default 5
+    maxConcurrentWorkflowTaskPollers: 10 #default 2
+    maxConcurrentActivityExecutionSize: 200 #default 200
+    maxConcurrentWorkflowTaskExecutionSize: 200 #default 200
+    maxConcurrentLocalActivityExecutionSize: 200 #default 200
+    maxWorkerActivitiesPerSecond: 0 #default 0 means unlimited
+    maxTaskQueueActivitiesPerSecond: 0 #default 0 means unlimited
+  workerFactory:
+    maxWorkfLowThreadCount: 600 #defautt 600
+    workflowHostLocalPollThreadCount: 5 #default 5
+  prometheus:
+    port: 9790
+    sleep: 3000
+
+grpc:
+  server.port: 8000
+  client:
+    receive-service:
+      address: 'static://localhost:8001'
+      enableKeepAlive: true
+      keepAliveWithoutCalls: true
+      negotiationType: plaintext
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: DEBUG
+    org.springframework.web.FilterChainProxy: DEBUG
+    org.springframework.web.client.RestTemplate: DEBUG
+    org.springframework.security: DEBUG
+    org.springframework.boot.autoconfigure: INFO
+    org.springframework.r2dbc: TRACE
+#    org.springframework.r2dbc: DEBUG
+
+    org.hibernate.SQL: DEBUG
+#    org.hibernate.type.descriptor.sql: trace
+#    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+#    org.springframework.data.r2dbc: DEBUG
+#    io.r2dbc.mariadb.QUERY: DEBUG # for queries
+#    io.r2dbc.mariadb.PARAM: DEBUG # for parameters

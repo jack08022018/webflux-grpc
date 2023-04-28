@@ -2,9 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core-library.main.iml" filepath="$PROJECT_DIR$/.idea/modules/core-library.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/receive.main.iml" filepath="$PROJECT_DIR$/.idea/modules/receive.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sender.main.iml" filepath="$PROJECT_DIR$/.idea/modules/sender.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sample-adapter.main.iml" filepath="$PROJECT_DIR$/.idea/modules/sample-adapter.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sample-orches-web.main.iml" filepath="$PROJECT_DIR$/.idea/modules/sample-orches-web.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sample-orches-webflux.main.iml" filepath="$PROJECT_DIR$/.idea/modules/sample-orches-webflux.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sample-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/sample-service.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/webflux-grpc.iml" filepath="$PROJECT_DIR$/webflux-grpc.iml" />
     </modules>
   </component>

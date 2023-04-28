@@ -6,7 +6,6 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="demo" />
         <module name="sender-maven" />
       </profile>
       <profile name="Gradle Imported" enabled="true">
@@ -15,11 +14,27 @@
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-configuration-processor/2.7.7/483f6acb3b0aff6c3d3dc99e8b8f390fa893d0a2/spring-boot-configuration-processor-2.7.7.jar" />
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.24/13a394eed5c4f9efb2a6d956e2086f1d81e857d9/lombok-1.18.24.jar" />
         </processorPath>
-        <module name="sender.main" />
+        <module name="sample-orches-webflux.main" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="core-library" target="19" />
+      <module name="core-library.main" target="19" />
+      <module name="core-library.test" target="19" />
+      <module name="demo" target="17" />
+      <module name="receive" target="19" />
+      <module name="receive.main" target="19" />
+      <module name="receive.test" target="19" />
+      <module name="sender" target="19" />
       <module name="sender-maven" target="1.5" />
+      <module name="sender-web" target="19" />
+      <module name="sender-web.main" target="19" />
+      <module name="sender-web.test" target="19" />
+      <module name="sender.main" target="19" />
+      <module name="sender.test" target="19" />
+      <module name="webflux-grpc.sender-web" target="19" />
+      <module name="webflux-grpc.sender-web.main" target="19" />
+      <module name="webflux-grpc.sender-web.test" target="19" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">

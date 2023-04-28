@@ -1,0 +1,35 @@
+server:
+  port: 9398
+  undertow.max-http-post-size: 0
+
+grpc:
+  server:
+    port: 8002
+  client:
+    orchestrator:
+      address: localhost:8001
+      enableKeepAlive: true
+      keepAliveWithoutCalls: true
+      negotiationType: plainText
+
+spring:
+  activemq:
+    broker-url: tcp://localhost:61616
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: DEBUG
+    org.springframework.web.FilterChainProxy: DEBUG
+    org.springframework.web.client.RestTemplate: DEBUG
+    org.springframework.security: DEBUG
+    org.springframework.boot.autoconfigure: INFO
+    org.springframework.r2dbc: TRACE
+#    org.springframework.r2dbc: DEBUG
+
+    org.hibernate.SQL: DEBUG
+#    org.hibernate.type.descriptor.sql: trace
+#    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+#    org.springframework.data.r2dbc: DEBUG
+#    io.r2dbc.mariadb.QUERY: DEBUG # for queries
+#    io.r2dbc.mariadb.PARAM: DEBUG # for parameters

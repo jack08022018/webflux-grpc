@@ -5,31 +5,41 @@
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
         <option name="distributionType" value="DEFAULT_WRAPPED" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/core-library" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/sample-adapter" />
         <option name="gradleHome" value="$PROJECT_DIR$/../../soft/gradle-7.6-all/gradle-7.6" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$/core-library" />
+            <option value="$PROJECT_DIR$/sample-adapter" />
           </set>
         </option>
       </GradleProjectSettings>
       <GradleProjectSettings>
         <option name="distributionType" value="DEFAULT_WRAPPED" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/receive" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/sample-orches-web" />
         <option name="gradleHome" value="$PROJECT_DIR$/../../soft/gradle-7.6-all/gradle-7.6" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$/receive" />
+            <option value="$PROJECT_DIR$/sample-orches-web" />
           </set>
         </option>
       </GradleProjectSettings>
       <GradleProjectSettings>
         <option name="distributionType" value="DEFAULT_WRAPPED" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/sender" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/sample-orches-webflux" />
         <option name="gradleHome" value="$PROJECT_DIR$/../../soft/gradle-7.6-all/gradle-7.6" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$/sender" />
+            <option value="$PROJECT_DIR$/sample-orches-webflux" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/sample-service" />
+        <option name="gradleHome" value="$PROJECT_DIR$/../../soft/gradle-7.6-all/gradle-7.6" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/sample-service" />
           </set>
         </option>
       </GradleProjectSettings>
