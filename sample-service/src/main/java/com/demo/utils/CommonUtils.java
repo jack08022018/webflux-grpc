@@ -48,13 +48,12 @@ public class CommonUtils {
         return function.getFunctionName() + ".RESPONSE";
     }
 
-    public void sendMessage(ReceiveGrpcRequest request) {
+    public void sendMessage(ReceiveGrpcRequest request, String queueName) {
         var adapterRequest = AdapterRequest.builder()
                 .workflowId(request.getWorkflowId())
                 .activityId(request.getActivityId())
                 .jsonData(request.getJsonData())
                 .build();
-        String queueName = "blocking.REQUEST";
         var message = gson.toJson(adapterRequest);
         jmsTemplate.convertAndSend(queueName, message);
     }

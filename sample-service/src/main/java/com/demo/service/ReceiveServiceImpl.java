@@ -34,21 +34,20 @@ public class ReceiveServiceImpl extends ReceiveServiceGrpc.ReceiveServiceImplBas
     @Override
     public void deduct(ReceiveGrpcRequest dto, StreamObserver<ReceiveGrpcResponse> responseObserver) {
         log.info("REQUEST: {}", gson.toJson(dto));
-        try {
-            TimeUnit.SECONDS.sleep(2);
-        }catch (Exception e){}
-
         ReceiveGrpcResponse response;
         try {
-//            var result = commonUtils.sendMessage(dto);
+            TimeUnit.SECONDS.sleep(2);
+            commonUtils.sendMessage(dto, "blocking.REQUEST");
+            response = ReceiveGrpcResponse.newBuilder()
+                    .setResponseCode(ResponseStatus.PROGRESSING.getCode())
+                    .build();
         }catch (Exception e) {
-
+            response = ReceiveGrpcResponse.newBuilder()
+                    .setResponseCode(ResponseStatus.ERROR.getCode())
+                    .setDescription(e.getMessage())
+                    .build();
         }
-//        ReceiveGrpcResponse response = ReceiveGrpcResponse.newBuilder()
-//                .setResponseCode(ResponseStatus.PROGRESSING.getCode())
-//                .setDescription("")
-//                .build();
-//        responseObserver.onNext(response);
+        responseObserver.onNext(response);
         responseObserver.onCompleted();
     }
 
