@@ -1,6 +1,6 @@
 package com.demo.activities;
 
-import com.demo.dto.ActivityRequest;
+import com.demo.dto.TransactionRequest;
 import com.demo.dto.ActivityResult;
 import io.temporal.activity.ActivityInterface;
 import io.temporal.activity.ActivityMethod;
@@ -8,6 +8,6 @@ import io.temporal.activity.ActivityMethod;
 @ActivityInterface
 public interface MainActivities {
     @ActivityMethod
-    ActivityResult getData(ActivityRequest dto);
+    ActivityResult getData(TransactionRequest dto);
 
 }

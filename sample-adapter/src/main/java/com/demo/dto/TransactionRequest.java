@@ -11,7 +11,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 //@JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ActivityRequest implements Serializable {
+public class TransactionRequest implements Serializable {
     private String transactionId;
     private String accountId;
 }

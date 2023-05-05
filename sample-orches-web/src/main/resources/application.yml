@@ -35,10 +35,10 @@ temporal:
     sleep: 3000
 
 grpc:
-  server.port: 8000
+  server.port: 8001
   client:
     receive-service:
-      address: 'static://localhost:8001'
+      address: 'static://localhost:8002'
       enableKeepAlive: true
       keepAliveWithoutCalls: true
       negotiationType: plaintext

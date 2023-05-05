@@ -2,11 +2,10 @@ package com.demo.controller;
 
 
 import com.demo.adapter.MainAdapter;
-import com.demo.dto.ActivityRequest;
+import com.demo.dto.TransactionRequest;
 import com.demo.dto.ActivityResult;
 import com.demo.service.SenderService;
 import com.google.gson.Gson;
-import grpc.ReceiveGrpcResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(value = "/api")
 @RequiredArgsConstructor
-public class SenderWebController {
+public class OrchestratorController {
     final SenderService senderService;
     final Gson gson;
 //    final ObjectMapper customObjectMapper;
@@ -30,7 +29,7 @@ public class SenderWebController {
 //    }
 
     @GetMapping("/flowBlocking")
-    public ActivityResult flowBlocking(@RequestBody ActivityRequest dto) throws Exception {
+    public ActivityResult flowBlocking(@RequestBody TransactionRequest dto) throws Exception {
         return senderService.blocking(dto);
     }
 

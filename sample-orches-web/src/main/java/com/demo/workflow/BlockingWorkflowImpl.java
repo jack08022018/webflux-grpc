@@ -1,7 +1,7 @@
 package com.demo.workflow;
 
 import com.demo.activities.MainActivities;
-import com.demo.dto.ActivityRequest;
+import com.demo.dto.TransactionRequest;
 import com.demo.dto.ActivityResult;
 import io.temporal.activity.ActivityOptions;
 import io.temporal.common.RetryOptions;
@@ -23,7 +23,7 @@ public class BlockingWorkflowImpl implements BlockingWorkflow {
     private final MainActivities mainActivities = Workflow.newActivityStub(MainActivities.class, activityOptions);
 
     @Override
-    public ActivityResult blocking(ActivityRequest dto) throws Exception {
+    public ActivityResult blocking(TransactionRequest dto) throws Exception {
         return mainActivities.getData(dto);
     }
 }

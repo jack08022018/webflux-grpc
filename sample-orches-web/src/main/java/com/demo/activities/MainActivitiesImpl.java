@@ -1,7 +1,7 @@
 package com.demo.activities;
 
 import com.demo.adapter.MainAdapter;
-import com.demo.dto.ActivityRequest;
+import com.demo.dto.TransactionRequest;
 import com.demo.dto.ActivityResult;
 import com.demo.utils.CommonUtils;
 import com.google.gson.Gson;
@@ -23,7 +23,7 @@ public class MainActivitiesImpl implements MainActivities {
     }
 
     @Override
-    public ActivityResult getData(ActivityRequest dto) {
+    public ActivityResult getData(TransactionRequest dto) {
         ActivityExecutionContext context = Activity.getExecutionContext();
         var jsonData = gson.toJson(dto);
         var grpcRequest = CommonUtils.buildGrpcRequest(dto,context, jsonData);

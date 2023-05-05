@@ -1,7 +1,7 @@
 package com.demo.service;
 
 import com.demo.constant.AllFunction;
-import com.demo.dto.ActivityRequest;
+import com.demo.dto.TransactionRequest;
 import com.demo.dto.ActivityResult;
 import com.demo.utils.WorkflowUtils;
 import com.demo.workflow.BlockingWorkflow;
@@ -16,7 +16,7 @@ public class SenderServiceImpl implements SenderService {
     final WorkflowUtils workflowUtils;
 
     @Override
-    public ActivityResult blocking(ActivityRequest dto) throws Exception {
+    public ActivityResult blocking(TransactionRequest dto) throws Exception {
         var workflowOptions = workflowUtils.getWorkflowOptions(AllFunction.BLOCKING);
         var workflow = workflowUtils.buildWorkflow(BlockingWorkflow.class, workflowOptions);
         return workflow.blocking(dto);

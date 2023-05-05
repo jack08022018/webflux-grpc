@@ -1,7 +1,7 @@
 package com.demo.utils;
 
 import com.demo.constant.ResponseStatus;
-import com.demo.dto.ActivityRequest;
+import com.demo.dto.TransactionRequest;
 import com.demo.dto.ActivityResult;
 import grpc.ReceiveGrpcRequest;
 import grpc.ReceiveGrpcResponse;
@@ -31,8 +31,8 @@ public class CommonUtils {
         return null;
     }
 
-    public static <T> ReceiveGrpcRequest buildGrpcRequest(ActivityRequest dto, ActivityExecutionContext context,
-                                                         String jsonData) {
+    public static <T> ReceiveGrpcRequest buildGrpcRequest(TransactionRequest dto, ActivityExecutionContext context,
+                                                          String jsonData) {
         var workflowId = context.getInfo().getWorkflowId();
         var activityId = context.getInfo().getActivityId();
         return ReceiveGrpcRequest.newBuilder()
