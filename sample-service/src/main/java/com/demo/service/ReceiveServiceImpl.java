@@ -50,4 +50,28 @@ public class ReceiveServiceImpl extends ReceiveServiceGrpc.ReceiveServiceImplBas
         responseObserver.onCompleted();
     }
 
+    public void handleMethod(ExcuteApi excute, ReceiveGrpcRequest dto,
+                             StreamObserver<ReceiveGrpcResponse> responseObserver) {
+        log.info("REQUEST: {}", gson.toJson(dto));
+        ReceiveGrpcResponse response;
+        try {
+            commonUtils.sendMessage(dto, "blocking.REQUEST");
+            response = ReceiveGrpcResponse.newBuilder()
+                    .setResponseCode(ResponseStatus.PROGRESSING.getCode())
+                    .build();
+        }catch (Exception e) {
+            response = ReceiveGrpcResponse.newBuilder()
+                    .setResponseCode(ResponseStatus.ERROR.getCode())
+                    .setDescription(e.getMessage())
+                    .build();
+        }
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
+
+    @FunctionalInterface
+    public interface ExcuteApi<R,D,Q> {
+        R apply(D d) throws Exception;
+    }
+
 }

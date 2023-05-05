@@ -21,7 +21,6 @@ public class SenderServiceImpl implements SenderService {
     public Mono<ActivityResult> nonBlocking(TransactionRequest dto) throws Exception {
         var workflowOptions = workflowUtils.getWorkflowOptions(AllFunction.BLOCKING);
         var workflow = workflowUtils.buildWorkflow(NonBlockingWorkflow.class, workflowOptions);
-//        return Mono.fromFuture(WorkflowClient.execute(workflow::getDataNonBlocking));
         return Mono.fromFuture(WorkflowClient.execute(() -> workflow.getDataNonBlocking(dto)));
     }
 }

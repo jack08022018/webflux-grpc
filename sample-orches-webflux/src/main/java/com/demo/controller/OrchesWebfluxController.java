@@ -2,14 +2,23 @@ package com.demo.controller;
 
 
 import com.demo.adapter.MainAdapter;
+import com.demo.constant.ResponseStatus;
 import com.demo.dto.ActivityResult;
 import com.demo.dto.TransactionRequest;
 import com.demo.service.SenderService;
 import com.google.gson.Gson;
+import grpc.ReceiveGrpcRequest;
+import grpc.ReceiveGrpcResponse;
+import io.grpc.stub.StreamObserver;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -32,7 +41,27 @@ public class OrchesWebfluxController {
 
     @PostMapping("/flowNonBlocking")
     public Mono<ActivityResult> flowNonBlocking(@RequestBody TransactionRequest dto) throws Exception {
-        return senderService.nonBlocking(dto);
+        ExcuteApi<TransactionRequest> excuteApi = senderService::nonBlocking;
+        return handleMethod(excuteApi, dto);
+//        return senderService.nonBlocking(dto);
+    }
+
+    public Mono<ActivityResult> handleMethod(ExcuteApi excute, TransactionRequest dto) {
+        log.info("REQUEST: {}", gson.toJson(dto));
+        try {
+            return excute.apply(dto);
+        }catch (Exception e) {
+            var result = ActivityResult.builder()
+                    .responseCode(ResponseStatus.ERROR.getCode())
+                    .description(e.getMessage())
+                    .build();
+            return Mono.just(result);
+        }
+    }
+
+    @FunctionalInterface
+    public interface ExcuteApi<T> {
+        Mono<ActivityResult> apply(T t) throws Exception;
     }
 
 //    @GetMapping("/grpcNonBlocking")

@@ -31,16 +31,6 @@ public class TemporalConfig {
                         .build();
         var service = WorkflowServiceStubs.newServiceStubs(options);
         return WorkflowClient.newInstance(service);
-
-//        var service = WorkflowServiceStubs.newInstance(
-//                WorkflowServiceStubsOptions.newBuilder()
-//                        .setTarget(temporalProperties.getServer())
-//                        .build());
-//        var option = WorkflowClientOptions.newBuilder()
-////                .setNamespace("default")
-//                .setDataConverter(new MyCustomDataConverter())
-//                .build();
-//        return WorkflowClient.newInstance(service, option);
     }
 
     @Bean
