@@ -3,7 +3,6 @@ package com.demo.constant;
 import java.util.Arrays;
 
 public enum AllFunction {
-    TEST("test"),
     BLOCKING("blocking");
 
     private String functionName;

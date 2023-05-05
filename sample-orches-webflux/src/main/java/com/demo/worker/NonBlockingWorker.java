@@ -3,8 +3,7 @@ package com.demo.worker;
 import com.demo.activities.MainActivitiesImpl;
 import com.demo.adapter.MainAdapter;
 import com.demo.constant.AllFunction;
-import com.demo.workflow.BlockingWorkflowImpl;
-import com.demo.workflow.TestWorkflowImpl;
+import com.demo.workflow.NonBlockingWorkflowImpl;
 import io.temporal.client.WorkflowClient;
 import io.temporal.worker.WorkerFactory;
 import io.temporal.worker.WorkerFactoryOptions;
@@ -19,7 +18,7 @@ import javax.annotation.PostConstruct;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class BlockingWorker {
+public class NonBlockingWorker {
     final WorkflowClient workflowClient;
     final WorkerFactoryOptions defaultWorkerFactoryOptions;
     final WorkerOptions defaultWorkerOptions;
@@ -28,12 +27,12 @@ public class BlockingWorker {
 
     @PostConstruct
     public void createWorker() {
-        log.info("Registering BlockingWorker..");
+        log.info("Registering NonBlockingWorker..");
         var workerFactory = WorkerFactory.newInstance(workflowClient, defaultWorkerFactoryOptions);
         var worker = workerFactory.newWorker(AllFunction.BLOCKING.name(), defaultWorkerOptions);
 
         var completionClient = workflowClient.newActivityCompletionClient();
-        worker.registerWorkflowImplementationTypes(defaultWorkflowImplementationOptions, BlockingWorkflowImpl.class);
+        worker.registerWorkflowImplementationTypes(defaultWorkflowImplementationOptions, NonBlockingWorkflowImpl.class);
         worker.registerActivitiesImplementations(new MainActivitiesImpl(mainAdapter, completionClient));
         workerFactory.start();
     }

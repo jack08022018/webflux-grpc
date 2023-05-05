@@ -2,17 +2,19 @@ package com.demo.activities;
 
 import com.demo.adapter.MainAdapter;
 import com.demo.dto.ActivityResult;
+import com.demo.dto.TransactionRequest;
+import com.demo.utils.CommonUtils;
 import com.google.gson.Gson;
-import grpc.TransactionRequest;
-import grpc.TransactionResponse;
+import io.temporal.activity.Activity;
+import io.temporal.activity.ActivityExecutionContext;
 import io.temporal.client.ActivityCompletionClient;
 import lombok.extern.slf4j.Slf4j;
-import reactor.core.publisher.Mono;
 
 @Slf4j
 public class MainActivitiesImpl implements MainActivities {
     private final MainAdapter mainAdapter;
     private final ActivityCompletionClient completionClient;
+
     final Gson gson = new Gson();
 
     public MainActivitiesImpl(MainAdapter mainAdapter, ActivityCompletionClient completionClient) {
@@ -21,23 +23,25 @@ public class MainActivitiesImpl implements MainActivities {
     }
 
     @Override
-    public Mono<TransactionResponse> deduct() {
-        System.out.println("AAA");
-        return mainAdapter.deduct("id1");
-//        ActivityExecutionContext context = Activity.getExecutionContext();
-//        byte[] taskToken = context.getTaskToken();
-//        context.doNotCompleteOnReturn();
-//        ForkJoinPool.commonPool().execute(() -> composeGreetingAsync(taskToken, "greeting!"));
+    public ActivityResult getData(TransactionRequest dto) {
+        ActivityExecutionContext context = Activity.getExecutionContext();
+        var jsonData = gson.toJson(dto);
+        var grpcRequest = CommonUtils.buildGrpcRequest(context, jsonData);
+        var grpcResponse = mainAdapter.deduct(grpcRequest);
+        return CommonUtils.handleActivity(context, grpcResponse);
     }
 
     @Override
-    public Mono<ActivityResult> deductHttp() {
-        return mainAdapter.deductHttp("id1");
-    }
-
-    @Override
-    public TransactionResponse blocking(TransactionRequest request) {
-        return mainAdapter.blocking(request);
+    public ActivityResult getDataNonBlocking() {
+        ActivityExecutionContext context = Activity.getExecutionContext();
+        TransactionRequest dto = TransactionRequest.builder()
+                .accountId("abc")
+                .transactionId("123")
+                .build();
+        var jsonData = gson.toJson(dto);
+        var grpcRequest = CommonUtils.buildGrpcRequest(context, jsonData);
+        var grpcResponse = mainAdapter.deduct(grpcRequest);
+        return CommonUtils.handleActivity(context, grpcResponse);
     }
 
 }

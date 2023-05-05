@@ -1,7 +1,7 @@
 package com.demo.config;
 
-import com.demo.common.CommonUtils;
 import com.demo.config.exception.ErrorResponse;
+import com.demo.utils.CommonUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

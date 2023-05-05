@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.jms.JMSException;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @RestController
@@ -36,6 +37,7 @@ public class AdapterController {
         request.setJsonData(customObjectMapper.writeValueAsString(activityResult));
         var response = customObjectMapper.writeValueAsString(request);
         log.info("\nsend to blocking.RESPONSE: " + response);
+        TimeUnit.SECONDS.sleep(2);
         jmsTemplate.convertAndSend("blocking.RESPONSE", response);
     }
 

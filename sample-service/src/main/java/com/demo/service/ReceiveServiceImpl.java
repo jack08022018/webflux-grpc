@@ -36,7 +36,6 @@ public class ReceiveServiceImpl extends ReceiveServiceGrpc.ReceiveServiceImplBas
         log.info("REQUEST: {}", gson.toJson(dto));
         ReceiveGrpcResponse response;
         try {
-            TimeUnit.SECONDS.sleep(2);
             commonUtils.sendMessage(dto, "blocking.REQUEST");
             response = ReceiveGrpcResponse.newBuilder()
                     .setResponseCode(ResponseStatus.PROGRESSING.getCode())

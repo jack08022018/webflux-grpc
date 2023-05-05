@@ -8,10 +8,7 @@ import com.demo.service.SenderService;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -28,7 +25,7 @@ public class OrchestratorController {
 //        return mainAdapter.deduct("id1");
 //    }
 
-    @GetMapping("/flowBlocking")
+    @PostMapping("/flowBlocking")
     public ActivityResult flowBlocking(@RequestBody TransactionRequest dto) throws Exception {
         return senderService.blocking(dto);
     }

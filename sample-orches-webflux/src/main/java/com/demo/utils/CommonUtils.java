@@ -1,8 +1,8 @@
 package com.demo.utils;
 
 import com.demo.constant.ResponseStatus;
-import com.demo.dto.TransactionRequest;
 import com.demo.dto.ActivityResult;
+import com.demo.dto.TransactionRequest;
 import grpc.ReceiveGrpcRequest;
 import grpc.ReceiveGrpcResponse;
 import io.temporal.activity.ActivityExecutionContext;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 public class CommonUtils {
     public static ActivityResult handleActivity(ActivityExecutionContext context, ReceiveGrpcResponse res) {
         var status = ResponseStatus.getEnum(res.getResponseCode());
-        ManualActivityCompletionClient client = context.useLocalManualCompletion();
+//        ManualActivityCompletionClient client = context.useLocalManualCompletion();
 //        client.fail();
 //        context.doNotCompleteOnReturn();
         switch (status) {
@@ -35,7 +35,7 @@ public class CommonUtils {
         return null;
     }
 
-    public static <T> ReceiveGrpcRequest buildGrpcRequest(TransactionRequest dto, ActivityExecutionContext context,
+    public static <T> ReceiveGrpcRequest buildGrpcRequest(ActivityExecutionContext context,
                                                           String jsonData) {
         var workflowId = context.getInfo().getWorkflowId();
         var activityId = context.getInfo().getActivityId();
