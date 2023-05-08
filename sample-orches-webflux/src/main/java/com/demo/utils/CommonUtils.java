@@ -1,16 +1,25 @@
 package com.demo.utils;
 
 import com.demo.constant.ResponseStatus;
+import com.demo.controller.OrchesWebfluxController;
 import com.demo.dto.ActivityResult;
 import com.demo.dto.TransactionRequest;
+import com.google.gson.Gson;
 import grpc.ReceiveGrpcRequest;
 import grpc.ReceiveGrpcResponse;
 import io.temporal.activity.ActivityExecutionContext;
 import io.temporal.activity.ManualActivityCompletionClient;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Mono;
 
+@Slf4j
 @Component
+@RequiredArgsConstructor
 public class CommonUtils {
+    final Gson gson;
+
     public static ActivityResult handleActivity(ActivityExecutionContext context, ReceiveGrpcResponse res) {
         var status = ResponseStatus.getEnum(res.getResponseCode());
 //        ManualActivityCompletionClient client = context.useLocalManualCompletion();
@@ -44,6 +53,19 @@ public class CommonUtils {
                 .setActivityId(activityId)
                 .setJsonData(jsonData)
                 .build();
+    }
+
+    public Mono<ActivityResult> handleApi(ExcuteApi excute, TransactionRequest dto) {
+        log.info("REQUEST: {}", gson.toJson(dto));
+        try {
+            return excute.apply(dto);
+        }catch (Exception e) {
+            var result = ActivityResult.builder()
+                    .responseCode(ResponseStatus.ERROR.getCode())
+                    .description(e.getMessage())
+                    .build();
+            return Mono.just(result);
+        }
     }
 
 }
