@@ -7,19 +7,16 @@ import com.demo.utils.CommonUtils;
 import com.google.gson.Gson;
 import io.temporal.activity.Activity;
 import io.temporal.activity.ActivityExecutionContext;
-import io.temporal.client.ActivityCompletionClient;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class MainActivitiesImpl implements MainActivities {
     private final MainAdapter mainAdapter;
-    private final ActivityCompletionClient completionClient;
 
     final Gson gson = new Gson();
 
-    public MainActivitiesImpl(MainAdapter mainAdapter, ActivityCompletionClient completionClient) {
+    public MainActivitiesImpl(MainAdapter mainAdapter) {
         this.mainAdapter = mainAdapter;
-        this.completionClient = completionClient;
     }
 
     @Override

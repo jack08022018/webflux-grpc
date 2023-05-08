@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 
 @Slf4j
-@Component
+//@Component
 @RequiredArgsConstructor
 public class NonBlockingWorker {
     final WorkflowClient workflowClient;
@@ -33,7 +33,7 @@ public class NonBlockingWorker {
 
         var completionClient = workflowClient.newActivityCompletionClient();
         worker.registerWorkflowImplementationTypes(defaultWorkflowImplementationOptions, NonBlockingWorkflowImpl.class);
-        worker.registerActivitiesImplementations(new MainActivitiesImpl(mainAdapter, completionClient));
+        worker.registerActivitiesImplementations(new MainActivitiesImpl(mainAdapter));
         workerFactory.start();
     }
 }
