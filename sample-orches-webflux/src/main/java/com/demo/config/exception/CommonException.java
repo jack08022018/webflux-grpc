@@ -1,9 +1,16 @@
 package com.demo.config.exception;
 
-public class CommonException extends Exception {
-    public CommonException() {}
+import lombok.Getter;
+import lombok.Setter;
 
-    public CommonException(String message) {
-        super(message);
+@Getter
+@Setter
+public class CommonException extends Exception {
+    private String errorCode;
+    private String description;
+
+    public CommonException(String errorCode, String description) {
+        this.errorCode = errorCode;
+        this.description = description;
     }
 }

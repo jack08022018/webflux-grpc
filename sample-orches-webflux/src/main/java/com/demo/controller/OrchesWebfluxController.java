@@ -38,11 +38,11 @@ public class OrchesWebfluxController {
 
     @PostMapping("/flowNonBlocking")
     public Mono<ActivityResult> flowNonBlocking(@RequestBody TransactionRequest dto) throws Exception {
-        ExcuteApi<TransactionRequest> excuteApi = (TransactionRequest d) -> {
-            return senderService.nonBlocking(d);
-        };
+//        ExcuteApi<TransactionRequest> excuteApi = (TransactionRequest d) -> {
+//            return senderService.nonBlocking(d);
+//        };
+        ExcuteApi<TransactionRequest> excuteApi = senderService::nonBlocking;
         return commonUtils.handleApi(excuteApi, dto);
-//        return senderService.nonBlocking(dto);
     }
 
 //    @GetMapping("/grpcNonBlocking")

@@ -1,5 +1,6 @@
 package com.demo.utils;
 
+import com.demo.config.exception.CommonException;
 import com.demo.constant.ResponseStatus;
 import com.demo.controller.OrchesWebfluxController;
 import com.demo.dto.ActivityResult;
@@ -59,6 +60,12 @@ public class CommonUtils {
         log.info("REQUEST: {}", gson.toJson(dto));
         try {
             return excute.apply(dto);
+        }catch (CommonException e) {
+            var result = ActivityResult.builder()
+                    .responseCode(e.getErrorCode())
+                    .description(e.getDescription())
+                    .build();
+            return Mono.just(result);
         }catch (Exception e) {
             var result = ActivityResult.builder()
                     .responseCode(ResponseStatus.ERROR.getCode())
