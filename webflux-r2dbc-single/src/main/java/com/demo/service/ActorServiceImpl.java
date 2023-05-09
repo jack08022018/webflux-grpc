@@ -1,48 +1,43 @@
 package com.demo.service;
 
 import com.demo.entity.ActorEntity;
-import com.demo.entity.CountryEntity;
 import com.demo.entity.TestTableEntity;
 import com.demo.repository.ActorRepository;
-import com.demo.repository.CountryRepository;
-import com.demo.repository.RentalNewRepository;
+import com.demo.repository.RentalRepository;
+import com.demo.entity.RentalEntity;
 import com.demo.repository.TestTableRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.reactive.TransactionalOperator;
 import org.springframework.ui.ModelMap;
 import reactor.core.publisher.Mono;
-
-import java.util.Optional;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class ActorServiceImpl implements ActorService {
     final ActorRepository actorRepository;
-    final RentalNewRepository rentalNewRepository;
-    final CountryRepository countryRepository;
+    final RentalRepository rentalRepository;
     final TestTableRepository testTableRepository;
+    final TransactionalOperator operator;
+    final R2dbcEntityTemplate entityTemplate;
 
     @Override
     public Mono getData() {
-        return Mono.just(testTableRepository.findById(64602));
-//        Optional<ActorEntity> response1 = actorRepository.findById(1);
-//        Optional<CountryEntity> response2 = countryRepository.findById(1);
-//        ModelMap result = new ModelMap();
-//        result.put("actor", response1.get());
-//        result.put("country", response2.get());
-//        return Mono.just(result);
-
-//        Mono<RentalNewEntity> response2 = rentalNewRepository.findById(152);
-//        return Mono.zip(response1, response2)
-//                .map(tuple -> {
-//                    ModelMap result = new ModelMap();
-//                    result.put("mariadb", tuple.getT1());
-//                    result.put("mssql", tuple.getT2());
-//                    return result;
-//                });
+//        return actorRepository.findById(1);
+//        return rentalRepository.findById(152);
+        Mono<ActorEntity> response1 = actorRepository.findById(1);
+        Mono<RentalEntity> response2 = rentalRepository.findById(152);
+        return Mono.zip(response1, response2)
+                .map(tuple -> {
+                    ModelMap result = new ModelMap();
+                    result.put("actor", tuple.getT1());
+                    result.put("rental", tuple.getT2());
+                    return result;
+                });
 
 //        return actorRepository.findById(1)
 //                .doOnSuccess(s -> {
@@ -62,42 +57,29 @@ public class ActorServiceImpl implements ActorService {
 
     @Override
     @Transactional
-//    @Transactional("mariadbTransactionManager")
     public Mono<Void> saveData() {
-//        var entity = TestTableEntity.builder()
-//                .message("2341")
-//                .build();
-//        testTableRepository.save(entity);
-//        int a = 1/0;
-        return Mono.just(1)
-                .doOnNext(s-> {
-                    var entity = TestTableEntity.builder()
-                            .message("xxx")
-                            .build();
-                    testTableRepository.save(entity);
-                    int a = 1/0;
-                })
-//                .doOnNext(s -> {
-//                    int a = 1/0;
-//                })
+        var entity = TestTableEntity.builder()
+                .message("abc")
+                .build();
+        return testTableRepository.save(entity)
                 .then();
-
-//        var actor = actorRepository.findById(1).get();
-//        var country = countryRepository.findById(1).get();
-//        actor.setFirstName(actor.getFirstName() + " aa");
-//        country.setCountry(country.getCountry() + " aa");
-//        actorRepository.save(actor);
-////        int a = 1/0;
-//        countryRepository.save(country);
-//        Mono.error(new Exception(""));
-//        return Mono.just(1).then();
-//        return actorRepository.findById(1).get()
-//                .doOnNext(s -> s.setFirstName(s.getFirstName() + " aa"))
-//                .flatMap(actorRepository::save)
-////                .thenReturn(toEvent(request))
-////                .flatMap(this.eventRepository::save)
-//                .as(operator::transactional)
+//        return Mono.just(entity)
+//                .flatMap(testTableRepository::save) // Use flatMap instead of doOnNext to return a Mono
+//                .then(Mono.defer(() -> Mono.empty()));
+//        return rentalRepository.findById(152)
+//                .doOnNext(s -> {
+//                    s.setInventoryId(25L);
+//                    System.out.println("AAAA");
+//                })
+////                .doOnNext(rentalRepository::save)
+//                .flatMap(rentalRepository::save) // Use flatMap instead of doOnNext to return a Mono
+//                .then(Mono.defer(() -> Mono.empty())); // Use then() to commit the transaction and return an empty Mono
 //                .then();
+    }
+//                .subscribe();
+//                .thenReturn(toEvent(request))
+//                .flatMap(this.eventRepository::save)
+//                .as(operator::transactional)
 //        Mono<ActorEntity> actor = actorRepository.findById(1);
 //        return transactionalOperator.execute(status -> {
 //            actor.flatMap(s -> {
@@ -124,5 +106,5 @@ public class ActorServiceImpl implements ActorService {
 //                    s.setInventoryId(s.getInventoryId() + 1);
 //                    return rentalNewRepository.save(s);
 //                });
-    }
+//        return Mono.just(1L);
 }

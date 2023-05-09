@@ -8,6 +8,8 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/sample-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/sample-service.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/webflux-grpc.iml" filepath="$PROJECT_DIR$/webflux-grpc.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/webflux-jpa.main.iml" filepath="$PROJECT_DIR$/.idea/modules/webflux-jpa.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/webflux-r2dbc-single.main.iml" filepath="$PROJECT_DIR$/.idea/modules/webflux-r2dbc-single.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/webflux-r2dbc.main.iml" filepath="$PROJECT_DIR$/.idea/modules/webflux-r2dbc.main.iml" />
     </modules>
   </component>
 </project>

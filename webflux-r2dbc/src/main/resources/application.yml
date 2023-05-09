@@ -1,0 +1,56 @@
+server:
+  port: 9299
+  undertow.max-http-post-size: 0
+  error:
+    include-message: always
+spring:
+  webflux.base-path: /webflux-r2dbc
+  application.name: webflux-r2dbc
+  main.allow-bean-definition-overriding: true
+  jackson.default-property-inclusion: non_absent
+#  jpa:
+#    properties:
+#      hibernate:
+#        format_sql: true
+#        dialect: org.hibernate.dialect.MariaDB103Dialect
+#  r2dbc:
+#    url: r2dbc:mariadb://localhost:3308/sakila
+#    username: root
+#    password: 123456
+
+datasource:
+  mssql:
+#    url: jdbc:sqlserver://localhost:1433;encrypt=true;trustServerCertificate=true;databaseName=sakila
+    driver: mssql
+    host: localhost
+    port: 1433
+    database: sakila
+    user: sa
+    password: A!123456
+    timeout: 10
+  mariadb:
+    driver: mariadb
+    host: localhost
+    port: 3308
+    database: sakila
+    user: root
+    password: 123456
+    timeout: 10
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: DEBUG
+    org.springframework.web.FilterChainProxy: DEBUG
+    org.springframework.web.client.RestTemplate: DEBUG
+    org.springframework.security: DEBUG
+    org.springframework.boot.autoconfigure: INFO
+    org.springframework.r2dbc: TRACE
+#    org.springframework.r2dbc: DEBUG
+
+#    org.hibernate.SQL: DEBUG
+#    org.hibernate.type.descriptor.sql: trace
+#    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+#    org.springframework.data.r2dbc: DEBUG
+#    io.r2dbc.mariadb.QUERY: DEBUG # for queries
+#    io.r2dbc.mariadb.PARAM: DEBUG # for parameters

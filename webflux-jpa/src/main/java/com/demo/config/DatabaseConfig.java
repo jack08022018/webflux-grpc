@@ -29,7 +29,7 @@ public class DatabaseConfig {
     final DatasourceProperties datasourceProperties;
 
     @Bean(name = "dataSource")
-    @ConfigurationProperties("mariadb.datasource.configuration")
+    @ConfigurationProperties("datasource.mariadb.configuration")
     public DataSource getDataSource() {
         var properties = datasourceProperties.getMariadb();
         return DataSourceBuilder.create()

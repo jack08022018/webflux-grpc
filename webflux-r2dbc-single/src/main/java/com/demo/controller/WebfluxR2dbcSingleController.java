@@ -2,9 +2,9 @@ package com.demo.controller;
 
 
 import com.demo.dto.RequestDto;
-import com.demo.dto.ResponseDto;
 import com.demo.dto.UserData;
 import com.demo.dto.UserDto;
+import com.demo.entity.RentalEntity;
 import com.demo.service.ActorService;
 import com.demo.service.ApiService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,33 +14,23 @@ import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.handler.timeout.WriteTimeoutHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.RandomStringUtils;
-import org.springframework.core.io.DefaultResourceLoader;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 import reactor.netty.http.client.HttpClient;
 
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @RestController
 @RequestMapping(value = "/api")
 @RequiredArgsConstructor
-public class WebfluxController {
+public class WebfluxR2dbcSingleController {
     final ApiService apiService;
     final Gson gson;
     final ObjectMapper customObjectMapper;
@@ -111,34 +101,6 @@ public class WebfluxController {
         });
     }
 
-    @GetMapping("/block")
-    public ModelMap block(@RequestBody RequestDto<UserDto> dto) throws Exception {
-        UserData result1 = webClient.post()
-                .uri("/api/test")
-                .bodyValue(dto.getData())
-                .retrieve()
-                .bodyToMono(UserData.class)
-                .subscribeOn(Schedulers.boundedElastic())
-                .toFuture().get(5L, TimeUnit.SECONDS);
-//                .block();
-        ModelMap result = new ModelMap();
-        result.put("result1", result1);
-        return result;
-    }
-
-    @GetMapping("/readFile")
-    public ResponseEntity<Resource> readFile() throws Exception {
-        ResourceLoader resourceLoader = new DefaultResourceLoader();
-        Resource resource = resourceLoader.getResource("classpath:application.yml");
-        InputStreamResource inputStreamResource = new InputStreamResource(resource.getInputStream());
-
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=tutorials.yml")
-                .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                //.contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
-                .body(inputStreamResource);
-    }
-
     @GetMapping("/flatMap")
     public String flatMap(@RequestBody RequestDto<UserDto> dto) throws InterruptedException {
         webClient.post()
@@ -184,27 +146,6 @@ public class WebfluxController {
                 .onErrorResume(ex -> {
                     throw new RuntimeException(ex);
                 });
-    }
-
-    public ResponseDto handle(ExcuteApi excute, RequestDto dto) {
-        try {
-            var lmid = RandomStringUtils.randomAlphabetic(6);
-            dto.setLmid(lmid);
-            log.info("{}: request={}", lmid, gson.toJson(dto));
-            var data = excute.apply(dto);
-            log.info("{}: response={}", lmid, gson.toJson(data));
-            return ResponseDto.builder()
-                    .requestId(dto.getRequestId())
-                    .status("00")
-                    .data(data)
-                    .build();
-        }catch (Exception e) {
-            return ResponseDto.builder()
-                    .requestId(dto.getRequestId())
-                    .status("06")
-                    .message(e.getMessage())
-                    .build();
-        }
     }
 
     @GetMapping("/getData")
