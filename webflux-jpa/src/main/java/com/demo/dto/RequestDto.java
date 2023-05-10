@@ -11,8 +11,6 @@ import lombok.*;
 public class RequestDto<T> {
     @JsonIgnore
     private String lmid;
-
-    private String requestId;
     private String requestDateTime;
     private T data;
 }

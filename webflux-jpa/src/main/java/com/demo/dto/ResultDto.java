@@ -7,7 +7,9 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResultDto {
+public class ResultDto<T> {
     private String responseStatus;
     private String description;
+    private T data;
+    private T db;
 }

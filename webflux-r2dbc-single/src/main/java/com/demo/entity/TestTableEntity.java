@@ -24,8 +24,8 @@ import java.time.LocalDateTime;
 @Table(name = "test_table")
 public class TestTableEntity implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rental_seq")
-    @SequenceGenerator(name="rental_seq", sequenceName="rental_seq", allocationSize = 50)
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rental_seq")
+//    @SequenceGenerator(name="rental_seq", sequenceName="rental_seq", allocationSize = 50)
     @Column("rental_id")
     private Long rentalId;
 

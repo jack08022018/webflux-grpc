@@ -36,6 +36,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleBookAPIException(Exception e){
         Map<String, String> errorMap = new HashMap<>();
+        log.error("CCC: " + e.getMessage(), e);
         errorMap.put("error message", e.getMessage());
         errorMap.put("status", HttpStatus.INTERNAL_SERVER_ERROR.toString());
         return ResponseEntity.ok(errorMap);

@@ -1,4 +1,4 @@
-package com.demo.common;
+package com.demo.utils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;

@@ -1,11 +1,11 @@
 server:
-  port: 9298
+  port: 9498
   undertow.max-http-post-size: 0
   error:
     include-message: always
 spring:
-  webflux.base-path: /sender
-  application.name: sender
+  webflux.base-path: /orches
+  application.name: orches
   main.allow-bean-definition-overriding: true
   jackson.default-property-inclusion: non_absent
 temporal:
@@ -13,7 +13,7 @@ temporal:
   #  namespace: 'os-dev'
   isUseSsl: false
   workflowTaskTimeoutConfig: 1
-  workflowExecutionTimeout: 30
+  workflowExecutionTimeout: 60
   #default activity
   defaultActivityStartToCloseTimeout: 15 #second
   defaultActivityMaximumRetryAttempts: 50

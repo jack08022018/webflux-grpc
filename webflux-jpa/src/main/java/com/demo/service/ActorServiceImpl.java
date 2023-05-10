@@ -1,20 +1,25 @@
 package com.demo.service;
 
-import com.demo.entity.ActorEntity;
-import com.demo.entity.CountryEntity;
+import com.demo.constant.ResponseStatus;
+import com.demo.dto.*;
 import com.demo.entity.TestTableEntity;
 import com.demo.repository.ActorRepository;
 import com.demo.repository.CountryRepository;
 import com.demo.repository.RentalNewRepository;
 import com.demo.repository.TestTableRepository;
+import com.demo.utils.CommonUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Service
@@ -24,10 +29,44 @@ public class ActorServiceImpl implements ActorService {
     final RentalNewRepository rentalNewRepository;
     final CountryRepository countryRepository;
     final TestTableRepository testTableRepository;
+    final CommonUtils commonUtils;
+    final WebClient orchesWebfluxClient;
 
     @Override
-    public Mono getData() {
-        return Mono.just(testTableRepository.findById(64602));
+    public Mono<ResultDto> getData() throws InterruptedException {
+        var request = TransactionRequest.builder()
+                .accountId("123")
+                .transactionId("abc")
+                .build();
+        Mono<ActivityResult> atomic = orchesWebfluxClient.post()
+                .uri("/api/flowNonBlocking")
+                .bodyValue(request)
+                .retrieve()
+                .bodyToMono(ActivityResult.class);
+//        var database = ResultDto.builder()
+//                .responseStatus(ResponseStatus.SUCCESS.getCode())
+//                .data(testTableRepository.findAll())
+//                .build();
+//        int a = 1/0;
+//        TimeUnit.SECONDS.sleep(2);
+        Mono<List> database = Mono.just(testTableRepository.findAll());
+        return Mono.zip(atomic, database)
+                .map(tuple -> ResultDto.builder()
+                        .responseStatus(ResponseStatus.SUCCESS.getCode())
+                        .data(tuple.getT1())
+                        .db(tuple.getT2())
+                        .build());
+
+//        return Mono.just(new ResultDto())
+//                .doOnNext(s -> {
+//                    s.setData(testTableRepository.findAll());
+//                })
+//                .doOnNext(s -> {
+//                    s.setDb(testTableRepository.findAll());
+//                    s.setResponseStatus(ResponseStatus.SUCCESS.getCode());
+//                });
+    }
+
 //        Optional<ActorEntity> response1 = actorRepository.findById(1);
 //        Optional<CountryEntity> response2 = countryRepository.findById(1);
 //        ModelMap result = new ModelMap();
@@ -58,29 +97,41 @@ public class ActorServiceImpl implements ActorService {
 //                });
 //        actor.subscribe();
 //        return actorRepository.findById(1);
-    }
 
     @Override
     @Transactional
-//    @Transactional("mariadbTransactionManager")
-    public Mono<Void> saveData() {
-//        var entity = TestTableEntity.builder()
-//                .message("2341")
-//                .build();
-//        testTableRepository.save(entity);
+    public ResultDto callSaveData(RequestDto dto) throws Exception {
+        var entity = TestTableEntity.builder()
+                .message(commonUtils.localDateToString(LocalDateTime.now(), "HH:mm:ss"))
+                .build();
+        testTableRepository.save(entity);
+        TimeUnit.SECONDS.sleep(1);
 //        int a = 1/0;
-        return Mono.just(1)
-                .doOnNext(s-> {
-                    var entity = TestTableEntity.builder()
-                            .message("xxx")
-                            .build();
-                    testTableRepository.save(entity);
-                    int a = 1/0;
-                })
-//                .doOnNext(s -> {
+        return ResultDto.builder()
+                .responseStatus("00")
+                .build();
+    }
+
+    @Transactional
+//    @Transactional("mariadbTransactionManager")
+    public CompletableFuture<Void> saveData() {
+        var entity = TestTableEntity.builder()
+                .message("2341")
+                .build();
+        return CompletableFuture.runAsync(() -> testTableRepository.save(entity));
+//        int a = 1/0;
+//        return Mono.just(1)
+//                .doOnNext(s-> {
+//                    var entity = TestTableEntity.builder()
+//                            .message("xxx")
+//                            .build();
+//                    testTableRepository.save(entity);
 //                    int a = 1/0;
 //                })
-                .then();
+////                .doOnNext(s -> {
+////                    int a = 1/0;
+////                })
+//                .then();
 
 //        var actor = actorRepository.findById(1).get();
 //        var country = countryRepository.findById(1).get();

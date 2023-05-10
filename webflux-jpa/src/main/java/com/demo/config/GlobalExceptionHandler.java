@@ -1,16 +1,13 @@
 package com.demo.config;
 
-import com.demo.common.CommonUtils;
-import com.demo.config.exception.ErrorResponse;
+import com.demo.utils.CommonUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.reactive.function.server.ServerRequest;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,6 +35,7 @@ public class GlobalExceptionHandler {
         Map<String, String> errorMap = new HashMap<>();
         errorMap.put("error message", e.getMessage());
         errorMap.put("status", HttpStatus.INTERNAL_SERVER_ERROR.toString());
+        log.error("\nCCC: " + e.getMessage(), e);
         return ResponseEntity.ok(errorMap);
     }
 

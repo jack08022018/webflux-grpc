@@ -25,7 +25,7 @@ public class OrchestratorController {
 //        return mainAdapter.deduct("id1");
 //    }
 
-    @PostMapping("/flowBlocking")
+    @PostMapping("/flowNonBlocking")
     public ActivityResult flowBlocking(@RequestBody TransactionRequest dto) throws Exception {
         return senderService.blocking(dto);
     }

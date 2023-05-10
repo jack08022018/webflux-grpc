@@ -1,9 +1,9 @@
 server:
-  port: 9298
-  servlet.context-path: /sender
+  port: 9498
+  servlet.context-path: /orches
   undertow.max-http-post-size: 0
 spring:
-  application.name: sender
+  application.name: orches
   main.allow-bean-definition-overriding: true
   jackson.default-property-inclusion: non_absent
 temporal:

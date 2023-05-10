@@ -1,20 +1,15 @@
 package com.demo.controller;
 
 
+import com.demo.constant.ResponseStatus;
 import com.demo.dto.RequestDto;
-import com.demo.dto.ResponseDto;
+import com.demo.dto.ResultDto;
 import com.demo.dto.UserData;
 import com.demo.dto.UserDto;
 import com.demo.service.ActorService;
-import com.demo.service.ApiService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-import io.netty.channel.ChannelOption;
-import io.netty.handler.timeout.ReadTimeoutHandler;
-import io.netty.handler.timeout.WriteTimeoutHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -22,16 +17,14 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
-import reactor.netty.http.client.HttpClient;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -39,38 +32,22 @@ import java.util.concurrent.TimeUnit;
 @RequestMapping(value = "/api")
 @RequiredArgsConstructor
 public class WebfluxJpaController {
-    final ApiService apiService;
-    final Gson gson;
+//    final ApiService apiService;
+//    final Gson gson;
     final ObjectMapper customObjectMapper;
     final ActorService actorService;
-//    final WebClient webClient;
-
-    HttpClient httpClient = HttpClient.create()
-            .responseTimeout(Duration.ofSeconds(10))
-            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 10000)
-            .option(ChannelOption.SO_KEEPALIVE, true)
-            .tcpConfiguration(client -> client
-                    .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 10000)
-                    .doOnConnected(conn -> conn
-                            .addHandlerLast(new ReadTimeoutHandler(30))
-                            .addHandlerLast(new WriteTimeoutHandler(30)))
-            );
-    WebClient webClient = WebClient.builder()
-            .clientConnector(new ReactorClientHttpConnector(httpClient))
-            .baseUrl("http://localhost:9199/ibmmq-consumer")
-            .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-            .build();
+    final WebClient orchesWebfluxClient;
 
     @GetMapping("/zipCombine")
     public Mono<ModelMap> zipCombine(@RequestBody RequestDto<UserDto> dto) throws InterruptedException {
-        Mono<UserData> response1 = webClient.post()
+        Mono<UserData> response1 = orchesWebfluxClient.post()
                 .uri("/api/test")
                 .bodyValue(dto.getData())
                 .retrieve()
                 .bodyToMono(UserData.class);
         var dto2 = customObjectMapper.convertValue(dto.getData(), UserDto.class);
         dto2.setName("King");
-        Mono<UserData> response2 = webClient.post()
+        Mono<UserData> response2 = orchesWebfluxClient.post()
                 .uri("/api/test")
                 .bodyValue(dto2)
                 .retrieve()
@@ -87,7 +64,7 @@ public class WebfluxJpaController {
 
     @GetMapping("/waiting")
     public Mono<ModelMap> waiting(@RequestBody RequestDto<UserDto> dto) throws InterruptedException {
-        Mono<UserData> response1 = webClient.post()
+        Mono<UserData> response1 = orchesWebfluxClient.post()
                 .uri("/api/test")
                 .bodyValue(dto.getData())
                 .retrieve()
@@ -95,7 +72,7 @@ public class WebfluxJpaController {
 
         return response1.flatMap(result1 -> {
             dto.getData().setName("King");
-            Mono<UserData> response2 = webClient.post()
+            Mono<UserData> response2 = orchesWebfluxClient.post()
                     .uri("/api/test")
                     .bodyValue(dto.getData())
                     .retrieve()
@@ -111,7 +88,7 @@ public class WebfluxJpaController {
 
     @GetMapping("/block")
     public ModelMap block(@RequestBody RequestDto<UserDto> dto) throws Exception {
-        UserData result1 = webClient.post()
+        UserData result1 = orchesWebfluxClient.post()
                 .uri("/api/test")
                 .bodyValue(dto.getData())
                 .retrieve()
@@ -139,14 +116,14 @@ public class WebfluxJpaController {
 
     @GetMapping("/flatMap")
     public String flatMap(@RequestBody RequestDto<UserDto> dto) throws InterruptedException {
-        webClient.post()
+        orchesWebfluxClient.post()
                 .uri("/api/test")
                 .bodyValue(dto.getData())
                 .retrieve()
                 .bodyToMono(UserData.class)
                 .flatMap(s -> {
                     System.out.println(LocalDateTime.now() + " RESPONSE1: " + s.getAddress());
-                    return webClient.post()
+                    return orchesWebfluxClient.post()
                             .uri("/api/test")
                             .bodyValue(dto.getData())
                             .retrieve()
@@ -160,7 +137,7 @@ public class WebfluxJpaController {
 
     @GetMapping("/webClient2")
     public Mono<UserData> webClient2(@RequestBody RequestDto<UserDto> dto) throws InterruptedException {
-        Mono<UserData> first = webClient.post()
+        Mono<UserData> first = orchesWebfluxClient.post()
                 .uri("/api/test")
                 .bodyValue(dto.getData())
                 .retrieve()
@@ -169,7 +146,7 @@ public class WebfluxJpaController {
         Mono<UserData> second = first.flatMap(s -> {
             dto.getData().setName("Nhung");
             int a = 1/0;
-            return webClient.post()
+            return orchesWebfluxClient.post()
                     .uri("/api/test")
                     .bodyValue(dto.getData())
                     .retrieve()
@@ -184,40 +161,70 @@ public class WebfluxJpaController {
                 });
     }
 
-    public ResponseDto handle(ExcuteApi excute, RequestDto dto) {
-        try {
-            var lmid = RandomStringUtils.randomAlphabetic(6);
-            dto.setLmid(lmid);
-            log.info("{}: request={}", lmid, gson.toJson(dto));
-            var data = excute.apply(dto);
-            log.info("{}: response={}", lmid, gson.toJson(data));
-            return ResponseDto.builder()
-                    .requestId(dto.getRequestId())
-                    .status("00")
-                    .data(data)
-                    .build();
-        }catch (Exception e) {
-            return ResponseDto.builder()
-                    .requestId(dto.getRequestId())
-                    .status("06")
-                    .message(e.getMessage())
-                    .build();
-        }
-    }
+//    public ResponseDto handle(ExcuteApi excute, RequestDto dto) {
+//        try {
+//            var lmid = RandomStringUtils.randomAlphabetic(6);
+//            dto.setLmid(lmid);
+//            log.info("{}: request={}", lmid, gson.toJson(dto));
+//            var data = excute.apply(dto);
+//            log.info("{}: response={}", lmid, gson.toJson(data));
+//            return ResponseDto.builder()
+//                    .requestId(dto.getRequestId())
+//                    .status("00")
+//                    .data(data)
+//                    .build();
+//        }catch (Exception e) {
+//            return ResponseDto.builder()
+//                    .requestId(dto.getRequestId())
+//                    .status("06")
+//                    .message(e.getMessage())
+//                    .build();
+//        }
+//    }
 
     @GetMapping("/getData")
-    public Mono<Object> getData() {
+    public Mono<ResultDto> getData() throws InterruptedException {
         return actorService.getData();
+//        ExcuteApi excuteApi = () -> actorService.getData();
+//        return handleGetFunction(excuteApi);
     }
 
     @PostMapping("/saveData")
-    public Mono<Void> saveData() {
+    public Mono<ResultDto> saveData(@RequestBody RequestDto dto) {
+        ExcuteApi excuteApi = () -> actorService.callSaveData(dto);
+        return handleGetFunction(excuteApi);
+//        return Mono.fromFuture(handleSaveFunction(excuteApi));
+    }
+
+    public Mono<ResultDto> handleGetFunction(ExcuteApi excuteApi) {
+        var result = new ResultDto();
         try {
-            return actorService.saveData();
-        }catch (Exception e) {
-            log.error("AAA: " + e.getMessage(), e);
-            return Mono.just(1).then();
+            result = excuteApi.apply();
+        } catch (Exception e) {
+            result = ResultDto.builder()
+                    .responseStatus(ResponseStatus.ERROR.getCode())
+                    .description(e.getMessage())
+                    .build();
         }
+        return Mono.just(result);
+    }
+
+    public CompletableFuture<ResultDto> handleSaveFunction(ExcuteApi excuteApi) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return excuteApi.apply();
+            } catch (Exception e) {
+                return ResultDto.builder()
+                        .responseStatus(ResponseStatus.ERROR.getCode())
+                        .description(e.getMessage())
+                        .build();
+            }
+        });
+    }
+
+    @FunctionalInterface
+    public interface ExcuteApi {
+        ResultDto apply() throws Exception;
     }
 
 }

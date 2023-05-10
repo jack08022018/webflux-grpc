@@ -150,12 +150,23 @@ public class WebfluxR2dbcSingleController {
 
     @GetMapping("/getData")
     public Mono<Object> getData() {
-        return actorService.getData();
+        try {
+            return actorService.getData();
+        }catch (Exception e) {
+            log.error("AAA: " + e.getMessage(), e);
+            return Mono.just("ERROR");
+        }
     }
 
     @PostMapping("/saveData")
     public Mono<Void> saveData() {
-        return actorService.saveData();
+        try {
+            log.error("BBB");
+            return actorService.saveData();
+        }catch (Exception e) {
+            log.error("AAA: " + e.getMessage(), e);
+            return Mono.just("ERROR").then();
+        }
     }
 
 }

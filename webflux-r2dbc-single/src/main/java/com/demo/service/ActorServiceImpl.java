@@ -9,6 +9,7 @@ import com.demo.repository.TestTableRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
+import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.reactive.TransactionalOperator;
@@ -24,6 +25,7 @@ public class ActorServiceImpl implements ActorService {
     final TestTableRepository testTableRepository;
     final TransactionalOperator operator;
     final R2dbcEntityTemplate entityTemplate;
+    final DatabaseClient databaseClient;
 
     @Override
     public Mono getData() {
@@ -56,13 +58,26 @@ public class ActorServiceImpl implements ActorService {
     }
 
     @Override
-    @Transactional
+//    @Transactional
     public Mono<Void> saveData() {
-        var entity = TestTableEntity.builder()
-                .message("abc")
-                .build();
-        return testTableRepository.save(entity)
-                .then();
+//        return databaseClient
+//                .sql("insert into test_table(message) values(:message)")
+//                .filter((statement, executeFunction) -> statement.returnGeneratedValues("rental_id").execute())
+//                .bind("message", "my first post")
+//                .fetch()
+//                .first()
+//                .then();
+
+//        var entity = TestTableEntity.builder()
+//                .rentalId(64602)
+//                .message("abc")
+//                .build();
+        return testTableRepository.findById(64602)
+                .doOnNext(s -> {
+                    s.setMessage("QQQ");
+                })
+                .flatMap(testTableRepository::save)
+                .then(Mono.defer(() -> Mono.empty()));
 //        return Mono.just(entity)
 //                .flatMap(testTableRepository::save) // Use flatMap instead of doOnNext to return a Mono
 //                .then(Mono.defer(() -> Mono.empty()));
