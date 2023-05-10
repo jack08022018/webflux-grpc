@@ -33,38 +33,41 @@ public class ActorServiceImpl implements ActorService {
     final WebClient orchesWebfluxClient;
 
     @Override
-    public Mono<ResultDto> getData() throws InterruptedException {
+    public Mono<ResultDto> getDataZip() throws InterruptedException {
         var request = TransactionRequest.builder()
                 .accountId("123")
                 .transactionId("abc")
                 .build();
-        Mono<ActivityResult> atomic = orchesWebfluxClient.post()
+        Mono<ActivityResult> atomicResult = orchesWebfluxClient.post()
                 .uri("/api/flowNonBlocking")
                 .bodyValue(request)
                 .retrieve()
                 .bodyToMono(ActivityResult.class);
-//        var database = ResultDto.builder()
-//                .responseStatus(ResponseStatus.SUCCESS.getCode())
-//                .data(testTableRepository.findAll())
-//                .build();
-//        int a = 1/0;
-//        TimeUnit.SECONDS.sleep(2);
         Mono<List> database = Mono.just(testTableRepository.findAll());
-        return Mono.zip(atomic, database)
+        return Mono.zip(atomicResult, database)
                 .map(tuple -> ResultDto.builder()
                         .responseStatus(ResponseStatus.SUCCESS.getCode())
                         .data(tuple.getT1())
                         .db(tuple.getT2())
                         .build());
+    }
 
-//        return Mono.just(new ResultDto())
-//                .doOnNext(s -> {
-//                    s.setData(testTableRepository.findAll());
-//                })
-//                .doOnNext(s -> {
-//                    s.setDb(testTableRepository.findAll());
-//                    s.setResponseStatus(ResponseStatus.SUCCESS.getCode());
-//                });
+    @Override
+    public Mono<ResultDto> getDataWaiting() throws InterruptedException {
+        var request = TransactionRequest.builder()
+                .accountId("123")
+                .transactionId("abc")
+                .build();
+        return orchesWebfluxClient.post()
+                .uri("/api/flowNonBlocking")
+                .bodyValue(request)
+                .retrieve()
+                .bodyToMono(ActivityResult.class)
+                .flatMap(atomic -> Mono.just(testTableRepository.findAll())
+                        .map(db -> ResultDto.builder()
+                                .data(atomic)
+                                .db(db)
+                                .build()));
     }
 
 //        Optional<ActorEntity> response1 = actorRepository.findById(1);

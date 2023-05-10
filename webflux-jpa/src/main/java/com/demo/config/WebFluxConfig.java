@@ -25,10 +25,10 @@ public class WebFluxConfig implements WebFluxConfigurer {
     public HttpClient getHttpClient() {
         return HttpClient.create()
                 .tcpConfiguration(client -> client
-                        .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 10000)
+                        .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 30000)
                         .doOnConnected(conn -> conn
-                                .addHandlerLast(new ReadTimeoutHandler(10))
-                                .addHandlerLast(new WriteTimeoutHandler(10)))
+                                .addHandlerLast(new ReadTimeoutHandler(30))
+                                .addHandlerLast(new WriteTimeoutHandler(30)))
                 );
     }
 

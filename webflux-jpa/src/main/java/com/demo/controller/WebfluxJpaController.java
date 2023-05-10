@@ -184,7 +184,7 @@ public class WebfluxJpaController {
 
     @GetMapping("/getData")
     public Mono<ResultDto> getData() throws InterruptedException {
-        return actorService.getData();
+        return actorService.getDataWaiting();
 //        ExcuteApi excuteApi = () -> actorService.getData();
 //        return handleGetFunction(excuteApi);
     }
