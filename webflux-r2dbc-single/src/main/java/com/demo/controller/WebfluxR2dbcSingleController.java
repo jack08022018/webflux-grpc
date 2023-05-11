@@ -2,7 +2,6 @@ package com.demo.controller;
 
 
 import com.demo.dto.*;
-import com.demo.entity.ActorEntity;
 import com.demo.service.ActorService;
 import com.demo.service.ApiService;
 import com.demo.utils.CommonUtils;
@@ -20,12 +19,12 @@ import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -157,7 +156,7 @@ public class WebfluxR2dbcSingleController {
     }
 
     @GetMapping("/getJoin")
-    public Flux<ActorDto> getRentalMoviesProjection() {
+    public Mono<List<ActorDto>> getRentalMoviesProjection() {
         return actorService.getJoin();
     }
 

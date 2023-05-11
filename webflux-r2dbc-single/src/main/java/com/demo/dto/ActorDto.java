@@ -17,4 +17,6 @@ public class ActorDto implements Serializable {
     private Integer actor_id;
     private String first_name;
     private Integer film_id;
+    private String country;
+    private String city;
 }

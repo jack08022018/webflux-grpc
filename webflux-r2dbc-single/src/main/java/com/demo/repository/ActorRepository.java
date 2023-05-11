@@ -28,4 +28,22 @@ public interface ActorRepository extends ReactiveCrudRepository<ActorEntity, Lon
             WHERE A.actor_id = 1""")
     Flux<ActorDto> findJoin();
 
+    @Query("""
+            WITH
+            COUNTRY_DATA AS (
+                SELECT *
+                FROM country
+                WHERE country_id < 30
+            ),
+            CITY_DATA AS (
+                SELECT *
+                FROM city
+                WHERE city_id < 100
+            )
+            SELECT A.country, b.city
+            FROM COUNTRY_DATA A
+                INNER JOIN CITY_DATA B
+                    ON B.country_id = A.country_id""")
+    Flux<ActorDto> findCTE();
+
 }

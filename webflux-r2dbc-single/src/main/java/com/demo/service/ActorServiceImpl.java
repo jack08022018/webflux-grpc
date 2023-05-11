@@ -3,18 +3,14 @@ package com.demo.service;
 import com.demo.config.exception.CommonException;
 import com.demo.constant.ResponseStatus;
 import com.demo.dto.ActorDto;
-import com.demo.dto.MovieRentalDto;
-import com.demo.dto.MovieRentalInterface;
 import com.demo.dto.ResultDto;
 import com.demo.entity.ActorEntity;
+import com.demo.entity.RentalEntity;
 import com.demo.entity.TestTableOldEntity;
 import com.demo.repository.ActorRepository;
 import com.demo.repository.RentalRepository;
-import com.demo.entity.RentalEntity;
 import com.demo.repository.TestTableNewRepository;
 import com.demo.repository.TestTableOldRepository;
-import io.r2dbc.spi.Row;
-import io.r2dbc.spi.RowMetadata;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
@@ -22,12 +18,9 @@ import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.reactive.TransactionalOperator;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.util.function.Tuple2;
 
 import java.util.List;
-import java.util.function.Function;
 
 @Slf4j
 @Service
@@ -43,7 +36,7 @@ public class ActorServiceImpl implements ActorService {
 
     @Override
     public Mono<ResultDto> getData() {
-        Mono<ActorEntity> response1 = actorRepository.findById(1);
+        Mono<List<ActorDto>> response1 = actorRepository.findCTE().collectList();
         Mono<RentalEntity> response2 = rentalRepository.findById(152);
         return Mono.zip(response1, response2)
                 .map(tuple -> ResultDto.builder()
@@ -91,13 +84,12 @@ public class ActorServiceImpl implements ActorService {
 //                })
                 .then(Mono.just(ResultDto.builder()
                         .responseStatus(ResponseStatus.SUCCESS.getCode())
-//                        .description("" + (1/0))
                         .build()));
     }
 
     @Override
-    public Flux<ActorDto> getJoin() {
-        return actorRepository.findJoin();
+    public Mono<List<ActorDto>> getJoin() {
+        return actorRepository.findCTE().collectList();
     }
 
 }
