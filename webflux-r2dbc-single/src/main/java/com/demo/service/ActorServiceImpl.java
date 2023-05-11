@@ -1,11 +1,20 @@
 package com.demo.service;
 
+import com.demo.config.exception.CommonException;
+import com.demo.constant.ResponseStatus;
+import com.demo.dto.ActorDto;
+import com.demo.dto.MovieRentalDto;
+import com.demo.dto.MovieRentalInterface;
+import com.demo.dto.ResultDto;
 import com.demo.entity.ActorEntity;
-import com.demo.entity.TestTableEntity;
+import com.demo.entity.TestTableOldEntity;
 import com.demo.repository.ActorRepository;
 import com.demo.repository.RentalRepository;
 import com.demo.entity.RentalEntity;
-import com.demo.repository.TestTableRepository;
+import com.demo.repository.TestTableNewRepository;
+import com.demo.repository.TestTableOldRepository;
+import io.r2dbc.spi.Row;
+import io.r2dbc.spi.RowMetadata;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
@@ -13,8 +22,12 @@ import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.reactive.TransactionalOperator;
-import org.springframework.ui.ModelMap;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.function.Tuple2;
+
+import java.util.List;
+import java.util.function.Function;
 
 @Slf4j
 @Service
@@ -22,104 +35,69 @@ import reactor.core.publisher.Mono;
 public class ActorServiceImpl implements ActorService {
     final ActorRepository actorRepository;
     final RentalRepository rentalRepository;
-    final TestTableRepository testTableRepository;
+    final TestTableNewRepository testTableNewRepository;
+    final TestTableOldRepository testTableOldRepository;
     final TransactionalOperator operator;
     final R2dbcEntityTemplate entityTemplate;
     final DatabaseClient databaseClient;
 
     @Override
-    public Mono getData() {
-//        return actorRepository.findById(1);
-//        return rentalRepository.findById(152);
+    public Mono<ResultDto> getData() {
         Mono<ActorEntity> response1 = actorRepository.findById(1);
         Mono<RentalEntity> response2 = rentalRepository.findById(152);
         return Mono.zip(response1, response2)
-                .map(tuple -> {
-                    ModelMap result = new ModelMap();
-                    result.put("actor", tuple.getT1());
-                    result.put("rental", tuple.getT2());
-                    return result;
-                });
+                .map(tuple -> ResultDto.builder()
+                        .data1(tuple.getT1())
+                        .data2(tuple.getT2())
+                        .build());
+    }
 
-//        return actorRepository.findById(1)
-//                .doOnSuccess(s -> {
-//                    System.out.println("SUCCESS");
-//                })
-//                .doOnError(s -> {
-//                    try {
-//                        throw s;
-//                    } catch (Throwable e) {
-//                        throw new RuntimeException(e);
-//                    }
-////                    s.getMessage();
-//                });
-//        actor.subscribe();
-//        return actorRepository.findById(1);
+    public Mono<Void> saveDatabaseClient() {
+        return databaseClient
+                .sql("insert into test_table(message) values(:message)")
+                .filter((statement, executeFunction) -> statement.returnGeneratedValues("rental_id").execute())
+                .bind("message", "my first post")
+                .fetch()
+                .first()
+                .then();
+    }
+    public Mono<Void> saveDataVoid() {
+        return Mono.just(1)
+                .doOnNext(s -> {
+                })
+                .then(Mono.defer(() -> Mono.empty()));
     }
 
     @Override
-//    @Transactional
-    public Mono<Void> saveData() {
-//        return databaseClient
-//                .sql("insert into test_table(message) values(:message)")
-//                .filter((statement, executeFunction) -> statement.returnGeneratedValues("rental_id").execute())
-//                .bind("message", "my first post")
-//                .fetch()
-//                .first()
-//                .then();
-
-//        var entity = TestTableEntity.builder()
-//                .rentalId(64602)
-//                .message("abc")
-//                .build();
-        return testTableRepository.findById(64602)
-                .doOnNext(s -> {
-                    s.setMessage("QQQ");
+    @Transactional(rollbackFor = Exception.class)
+    public Mono<ResultDto> saveData() {
+        var oldEntity = TestTableOldEntity.builder()
+                .status("new")
+                .build();
+        return testTableNewRepository.findById(1L)
+                .doOnNext(s -> s.setMessage("III"))
+                .flatMap(testTableNewRepository::save)
+                .flatMap(s -> testTableOldRepository.save(oldEntity))
+                .handle((s, sink) -> {
+                    if (s.getStatus().equals("new")) {
+                        sink.error(new CommonException("common Exception"));
+                    }
                 })
-                .flatMap(testTableRepository::save)
-                .then(Mono.defer(() -> Mono.empty()));
-//        return Mono.just(entity)
-//                .flatMap(testTableRepository::save) // Use flatMap instead of doOnNext to return a Mono
-//                .then(Mono.defer(() -> Mono.empty()));
-//        return rentalRepository.findById(152)
-//                .doOnNext(s -> {
-//                    s.setInventoryId(25L);
-//                    System.out.println("AAAA");
+//                .flatMap(s -> {
+//                    if (s.getStatus().equals("new")) {
+//                        Mono.error(new CommonException("common Exception"));
+//                    }
+//                    return Mono.just(s);
 //                })
-////                .doOnNext(rentalRepository::save)
-//                .flatMap(rentalRepository::save) // Use flatMap instead of doOnNext to return a Mono
-//                .then(Mono.defer(() -> Mono.empty())); // Use then() to commit the transaction and return an empty Mono
-//                .then();
+                .then(Mono.just(ResultDto.builder()
+                        .responseStatus(ResponseStatus.SUCCESS.getCode())
+//                        .description("" + (1/0))
+                        .build()));
     }
-//                .subscribe();
-//                .thenReturn(toEvent(request))
-//                .flatMap(this.eventRepository::save)
-//                .as(operator::transactional)
-//        Mono<ActorEntity> actor = actorRepository.findById(1);
-//        return transactionalOperator.execute(status -> {
-//            actor.flatMap(s -> {
-//                s.setFirstName(s.getFirstName() + " aa");
-//                return mariadbEntityTemplate.update(actor);
-//            })
-//                    .then(response2.flatMap(rentalNew -> {
-//                rentalNew.setAmount(100); // update the amount
-//                return r2dbcEntityTemplate.update(rentalNew); // update the entity and return the updated entity
-//            }))
-//                    .then();
-//            return Mono.just(1L);
-//        }).count();
 
-//        Mono<ActorEntity> actor = actorRepository.findById(1)
-//                .flatMap(s -> {
-//                    s.setFirstName(s.getFirstName() + " aa");
-//                    return actorRepository.save(s);
-//                });
-//        actor.subscribe();
-//        int a = 1/0;
-//        Mono<RentalNewEntity> rental = rentalNewRepository.findById(152)
-//                .flatMap(s -> {
-//                    s.setInventoryId(s.getInventoryId() + 1);
-//                    return rentalNewRepository.save(s);
-//                });
-//        return Mono.just(1L);
+    @Override
+    public Flux<ActorDto> getJoin() {
+        return actorRepository.findJoin();
+    }
+
 }

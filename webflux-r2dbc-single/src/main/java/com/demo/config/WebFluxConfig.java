@@ -1,6 +1,7 @@
 package com.demo.config;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
@@ -20,20 +21,22 @@ import reactor.netty.http.client.HttpClient;
 @Configuration
 @EnableWebFlux
 public class WebFluxConfig implements WebFluxConfigurer {
-    @Bean
-    public WebClient getWebClient() {
-        HttpClient httpClient = HttpClient.create()
+    @Bean("httpClient")
+    public HttpClient getHttpClient() {
+        return HttpClient.create()
                 .tcpConfiguration(client -> client
-                        .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 10000)
+                        .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 30000)
                         .doOnConnected(conn -> conn
-                                        .addHandlerLast(new ReadTimeoutHandler(10))
-                                        .addHandlerLast(new WriteTimeoutHandler(10)))
+                                .addHandlerLast(new ReadTimeoutHandler(30))
+                                .addHandlerLast(new WriteTimeoutHandler(30)))
                 );
+    }
 
-        ClientHttpConnector connector = new ReactorClientHttpConnector(httpClient.wiretap(true));
-
+    @Bean("orchesWebfluxClient")
+    public WebClient getWebClient(@Autowired HttpClient httpClient) {
+        var connector = new ReactorClientHttpConnector(httpClient.wiretap(true));
         return WebClient.builder()
-                .baseUrl("http://localhost:9199/ibmmq-consumer")
+                .baseUrl("http://localhost:9498/orches")
                 .clientConnector(connector)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();

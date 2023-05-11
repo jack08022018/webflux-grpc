@@ -58,6 +58,12 @@ public class MariadbConfig extends AbstractR2dbcConfiguration {
         return new R2dbcTransactionManager(connectionFactory);
     }
 
+//    @Primary
+//    @Bean("transactionManager")
+//    public R2dbcTransactionManager transactionManager(@Autowired ConnectionFactory connectionFactory) {
+//        return new R2dbcTransactionManager(connectionFactory);
+//    }
+
     @Primary
     @Bean("databaseClient")
     public DatabaseClient databaseClient(@Autowired ConnectionFactory connectionFactory) {

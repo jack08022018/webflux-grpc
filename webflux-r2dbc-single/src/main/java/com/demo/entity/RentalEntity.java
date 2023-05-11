@@ -2,9 +2,6 @@ package com.demo.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.SequenceGenerator;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,13 +22,10 @@ import java.time.LocalDateTime;
 public class RentalEntity implements Serializable {
 //    @JsonIgnore
     @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rental_seq")
-    @SequenceGenerator(name="rental_seq", sequenceName="rental_seq", allocationSize = 50)
     @Column("rental_id")
     private Long rentalId;
 
-    @JsonIgnore
+//    @JsonIgnore
     @Column("rental_date")
     private LocalDateTime rentalDate;
 //

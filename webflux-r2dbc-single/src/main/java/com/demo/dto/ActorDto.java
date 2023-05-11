@@ -7,15 +7,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class MovieRentalDto implements Serializable {
-    private String title;
-    private String rentalDate;
-
+public class ActorDto implements Serializable {
+    private Integer actor_id;
+    private String first_name;
+    private Integer film_id;
 }

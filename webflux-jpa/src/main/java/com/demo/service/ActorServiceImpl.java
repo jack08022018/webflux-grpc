@@ -63,11 +63,22 @@ public class ActorServiceImpl implements ActorService {
                 .bodyValue(request)
                 .retrieve()
                 .bodyToMono(ActivityResult.class)
-                .flatMap(atomic -> Mono.just(testTableRepository.findAll())
-                        .map(db -> ResultDto.builder()
-                                .data(atomic)
-                                .db(db)
-                                .build()));
+                .flatMap(atomic -> {
+                    try {
+                        return Mono.just(callSaveData(new RequestDto()))
+                                .map(db -> ResultDto.builder()
+                                                    .data(atomic)
+                                                    .db(db)
+                                                    .build());
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+//                .flatMap(atomic -> Mono.just(testTableRepository.findAll())
+//                        .map(db -> ResultDto.builder()
+//                                .data(atomic)
+//                                .db(db)
+//                                .build()));
     }
 
 //        Optional<ActorEntity> response1 = actorRepository.findById(1);

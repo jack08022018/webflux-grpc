@@ -21,12 +21,11 @@ repositories {
 
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
-//	implementation("net.devh:grpc-web-client:0.8.1")
-	implementation ("org.springframework.boot:spring-boot-starter-data-r2dbc")
-	implementation("org.mariadb:r2dbc-mariadb:1.1.3")
+	implementation ("org.springframework.boot:spring-boot-starter-data-r2dbc:2.7.7")
+	implementation("org.mariadb:r2dbc-mariadb:1.1.2")
 //	implementation("io.asyncer:r2dbc-mysql:1.0.0")
-	implementation("io.r2dbc:r2dbc-mssql:1.0.0.RELEASE")
-	implementation("jakarta.persistence:jakarta.persistence-api:3.1.0")
+//	implementation("io.r2dbc:r2dbc-mssql:1.0.0.RELEASE")
+//	implementation("jakarta.persistence:jakarta.persistence-api:3.1.0")
 
 	implementation("org.apache.commons:commons-lang3:3.12.0")
 	implementation("com.google.code.gson:gson:2.10.1")

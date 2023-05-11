@@ -1,12 +1,12 @@
 package com.demo.controller;
 
 
-import com.demo.dto.RequestDto;
-import com.demo.dto.UserData;
-import com.demo.dto.UserDto;
-import com.demo.entity.RentalEntity;
+import com.demo.dto.*;
+import com.demo.entity.ActorEntity;
 import com.demo.service.ActorService;
 import com.demo.service.ApiService;
+import com.demo.utils.CommonUtils;
+import com.demo.utils.ExcuteApi;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import io.netty.channel.ChannelOption;
@@ -20,6 +20,7 @@ import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
 
@@ -35,6 +36,7 @@ public class WebfluxR2dbcSingleController {
     final Gson gson;
     final ObjectMapper customObjectMapper;
     final ActorService actorService;
+    final CommonUtils commonUtils;
 //    final WebClient webClient;
 
     HttpClient httpClient = HttpClient.create()
@@ -149,24 +151,20 @@ public class WebfluxR2dbcSingleController {
     }
 
     @GetMapping("/getData")
-    public Mono<Object> getData() {
-        try {
-            return actorService.getData();
-        }catch (Exception e) {
-            log.error("AAA: " + e.getMessage(), e);
-            return Mono.just("ERROR");
-        }
+    public Mono<ResultDto> getData() {
+        ExcuteApi excuteApi = () -> actorService.getData();
+        return commonUtils.handleApi(excuteApi);
+    }
+
+    @GetMapping("/getJoin")
+    public Flux<ActorDto> getRentalMoviesProjection() {
+        return actorService.getJoin();
     }
 
     @PostMapping("/saveData")
-    public Mono<Void> saveData() {
-        try {
-            log.error("BBB");
-            return actorService.saveData();
-        }catch (Exception e) {
-            log.error("AAA: " + e.getMessage(), e);
-            return Mono.just("ERROR").then();
-        }
+    public Mono<ResultDto> saveData() {
+        ExcuteApi excuteApi = () -> actorService.saveData();
+        return commonUtils.handleApi(excuteApi);
     }
 
 }
