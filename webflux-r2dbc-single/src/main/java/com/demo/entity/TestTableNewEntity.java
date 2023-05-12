@@ -1,11 +1,13 @@
 package com.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Version;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
@@ -24,5 +26,10 @@ public class TestTableNewEntity implements Serializable {
 
     @Column("message")
     private String message;
+
+    @Version
+    @JsonIgnore
+    @Column("version")
+    private Integer version;
 
 }

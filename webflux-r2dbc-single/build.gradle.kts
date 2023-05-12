@@ -23,7 +23,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
 	implementation ("org.springframework.boot:spring-boot-starter-data-r2dbc:2.7.7")
 	implementation("org.mariadb:r2dbc-mariadb:1.1.2")
-//	implementation("io.asyncer:r2dbc-mysql:1.0.0")
+//	implementation("com.oracle.database.r2dbc:oracle-r2dbc:1.1.1")
 //	implementation("io.r2dbc:r2dbc-mssql:1.0.0.RELEASE")
 //	implementation("jakarta.persistence:jakarta.persistence-api:3.1.0")
 

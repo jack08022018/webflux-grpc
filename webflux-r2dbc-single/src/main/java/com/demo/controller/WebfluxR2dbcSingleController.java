@@ -2,6 +2,7 @@ package com.demo.controller;
 
 
 import com.demo.dto.*;
+import com.demo.entity.ClassEntity;
 import com.demo.service.ActorService;
 import com.demo.service.ApiService;
 import com.demo.utils.CommonUtils;
@@ -19,6 +20,7 @@ import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
 
@@ -163,6 +165,18 @@ public class WebfluxR2dbcSingleController {
     @PostMapping("/saveData")
     public Mono<ResultDto> saveData() {
         ExcuteApi excuteApi = () -> actorService.saveData();
+        return commonUtils.handleApi(excuteApi);
+    }
+
+    @PostMapping("/saveDataBatch")
+    public Mono<Void> saveDataBatch() {
+        return actorService.saveDataBatch();
+    }
+
+    @GetMapping("/getDataZip")
+    public Mono<ResultDto> getDataZip() {
+//        return actorService.getDataZip();
+        ExcuteApi excuteApi = () -> actorService.getDataZip();
         return commonUtils.handleApi(excuteApi);
     }
 

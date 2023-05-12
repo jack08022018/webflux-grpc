@@ -9,6 +9,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -31,5 +34,10 @@ public class CommonUtils {
                             .description(e.getMessage())
                             .build());
                 });
+    }
+
+    public String localDateToString(LocalDateTime date, String pattern) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+        return date.format(formatter);
     }
 }
