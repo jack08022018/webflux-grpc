@@ -11,6 +11,7 @@ import java.util.List;
 public interface ActorService {
     Mono<ResultDto> getData();
     Mono<ResultDto> saveData();
+    Mono<ResultDto> saveBook();
     Mono<Void> saveDataBatch();
     Mono<List<ActorDto>> getJoin();
 

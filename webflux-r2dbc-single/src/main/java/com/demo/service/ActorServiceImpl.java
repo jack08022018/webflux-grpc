@@ -5,13 +5,14 @@ import com.demo.dto.ActivityResult;
 import com.demo.dto.ActorDto;
 import com.demo.dto.ResultDto;
 import com.demo.dto.TransactionRequest;
+import com.demo.entity.BookTypeEntity;
 import com.demo.entity.ClassEntity;
 import com.demo.entity.RentalEntity;
 import com.demo.entity.TestTableOldEntity;
 import com.demo.repository.*;
 import com.demo.utils.CommonUtils;
-import io.r2dbc.spi.Statement;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
@@ -41,11 +42,16 @@ public class ActorServiceImpl implements ActorService {
     final WebClient orchesWebfluxClient;
     final CommonUtils commonUtils;
     final ClassRepository classRepository;
+    final BookTypeRepository bookTypeRepository;
+    final BookRepository bookRepository;
 
     @Override
     public Mono<ResultDto> getData() {
         Mono<List<ActorDto>> response1 = actorRepository.findCTE().collectList();
         Mono<RentalEntity> response2 = rentalRepository.findById(152);
+
+//        Mono<String> response1 = Mono.just("");
+//        Mono<BookTypeEntity> response2 = bookTypeRepository.findById(1L);
         return Mono.zip(response1, response2)
                 .map(tuple -> ResultDto.builder()
                         .data1(tuple.getT1())
@@ -70,6 +76,7 @@ public class ActorServiceImpl implements ActorService {
     }
 
     @Override
+//    @SneakyThrows
     @Transactional(rollbackFor = Exception.class)
     public Mono<ResultDto> saveData() {
         var oldEntity = TestTableOldEntity.builder()
@@ -78,28 +85,47 @@ public class ActorServiceImpl implements ActorService {
         return testTableNewRepository.findById(1L)
                 .doOnNext(s -> {
                     s.setMessage(RandomStringUtils.randomAlphanumeric(6));
-                    try {
-                        TimeUnit.SECONDS.sleep(2);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
+//                    try {
+//                        TimeUnit.SECONDS.sleep(2);
+//                    } catch (InterruptedException e) {
+//                        throw new RuntimeException(e);
+//                    }
                 })
                 .flatMap(testTableNewRepository::save)
 //                .flatMap(s -> testTableOldRepository.save(oldEntity))
                 .handle((s, sink) -> {
-//                    if (s.getStatus().equals("new")) {
-//                        sink.error(new CommonException("common Exception"));
-//                    }
                 })
-//                .flatMap(s -> {
-//                    if (s.getStatus().equals("new")) {
-//                        Mono.error(new CommonException("common Exception"));
-//                    }
-//                    return Mono.just(s);
+                .then(Mono.just(ResultDto.builder()
+                        .responseStatus(ResponseStatus.SUCCESS.getCode())
+                        .build()));
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Mono<ResultDto> saveBook() {
+        var bookType = BookTypeEntity.builder()
+                .id(1L)
+                .detail("Fiction")
+                .build();
+        return bookRepository.findById(2)
+                .doOnNext(s -> s.setBookName("Mathematic"))
+                .flatMap(bookRepository::save)
+                .flatMap(s -> bookTypeRepository.save(bookType))
+//                .doOnNext(s -> {
+//                    int a = 1/0;
 //                })
                 .then(Mono.just(ResultDto.builder()
                         .responseStatus(ResponseStatus.SUCCESS.getCode())
                         .build()));
+//        var entity = BookEntity.builder()
+//                .id(2L)
+//                .bookTypeId(1L)
+//                .bookName("Mathematic")
+//                .build();
+//        return bookRepository.save(entity)
+//                .then(Mono.just(ResultDto.builder()
+//                        .responseStatus(ResponseStatus.SUCCESS.getCode())
+//                        .build()));
     }
 
     @Override

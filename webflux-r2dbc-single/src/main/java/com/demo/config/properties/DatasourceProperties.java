@@ -25,6 +25,6 @@ public class DatasourceProperties {
 
     @PostConstruct
     public void init() {
-
+        System.out.println("a");
     }
 }

@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.mariadb.r2dbc.MariadbConnectionConfiguration;
 import org.mariadb.r2dbc.MariadbConnectionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -28,11 +29,12 @@ import java.time.Duration;
 @EnableR2dbcRepositories(basePackages = "com.demo.repository",
         databaseClientRef = "databaseClient",
         entityOperationsRef = "entityTemplate")
+@ConditionalOnProperty(name = "datasource.mariadb.enabled", havingValue = "true")
 public class MariadbConfig extends AbstractR2dbcConfiguration {
     final DatasourceProperties datasourceProperties;
 
     @Primary
-    @Bean("mariaConnectionFactory")
+    @Bean
     public MariadbConnectionFactory connectionFactory() {
         var properties = datasourceProperties.getMariadb();
         return new MariadbConnectionFactory(MariadbConnectionConfiguration.builder()
@@ -73,10 +75,10 @@ public class MariadbConfig extends AbstractR2dbcConfiguration {
     @Primary
     @Bean("entityTemplate")
     public R2dbcEntityOperations entityTemplate(
-            @Autowired ConnectionFactory mariaConnectionFactory) {
+            @Autowired ConnectionFactory connectionFactory) {
         var strategy = new DefaultReactiveDataAccessStrategy(MySqlDialect.INSTANCE);
         DatabaseClient databaseClient = DatabaseClient.builder()
-                .connectionFactory(mariaConnectionFactory)
+                .connectionFactory(connectionFactory)
                 .bindMarkers(MySqlDialect.INSTANCE.getBindMarkersFactory())
                 .build();
 

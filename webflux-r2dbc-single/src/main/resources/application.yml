@@ -8,9 +8,6 @@ spring:
   application.name: webflux-r2dbc-single
   main.allow-bean-definition-overriding: true
   jackson.default-property-inclusion: non_absent
-  r2dbc:
-    pool:
-      enabled: false
 #  jpa:
 #    properties:
 #      hibernate:
@@ -20,10 +17,13 @@ spring:
 #    url: r2dbc:mariadb://localhost:3308/sakila
 #    username: root
 #    password: 123456
+#    pool:
+#      enabled: false
 
 datasource:
   mssql:
 #    url: jdbc:sqlserver://localhost:1433;encrypt=true;trustServerCertificate=true;databaseName=sakila
+    enabled: true
     driver: mssql
     host: localhost
     port: 1433
@@ -32,6 +32,7 @@ datasource:
     password: A!123456
     timeout: 10
   mariadb:
+    enabled: false
     driver: mariadb
     host: localhost
     port: 3308
@@ -50,10 +51,3 @@ logging:
     org.springframework.boot.autoconfigure: INFO
 #    org.springframework.r2dbc: TRACE
     org.springframework.r2dbc: DEBUG
-
-#    org.hibernate.SQL: DEBUG
-#    org.hibernate.type.descriptor.sql: trace
-#    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
-#    org.springframework.data.r2dbc: DEBUG
-    io.r2dbc.mariadb.QUERY: DEBUG # for queries
-    io.r2dbc.mariadb.PARAM: DEBUG # for parameters
