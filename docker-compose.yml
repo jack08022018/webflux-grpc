@@ -55,6 +55,15 @@ services:
 #      - oracle-data:/opt/oracle/oradata
 #      - oracle-backup:/opt/oracle/backup
 
+  oracle:
+    image: gvenzl/oracle-xe
+    container_name: oracleDb
+    ports:
+      - "1521:1521"
+    environment:
+      ORACLE_PASSWORD: 123456
+#  docker run --name oracledb -p 1521:1521 -e ORACLE_PASSWORD=123456 gvenzl/oracle-xe
+
 #  mssql:
 #    image: mcr.microsoft.com/mssql/server:latest
 #    container_name: mssql

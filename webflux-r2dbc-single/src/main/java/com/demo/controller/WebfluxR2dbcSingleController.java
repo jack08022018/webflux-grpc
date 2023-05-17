@@ -2,7 +2,8 @@ package com.demo.controller;
 
 
 import com.demo.dto.*;
-import com.demo.entity.ClassEntity;
+import com.demo.entity.mssql.BookTypeEntity;
+import com.demo.entity.oracle.ClientInfoEntity;
 import com.demo.service.ActorService;
 import com.demo.service.ApiService;
 import com.demo.utils.CommonUtils;
@@ -27,6 +28,7 @@ import reactor.netty.http.client.HttpClient;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -157,6 +159,11 @@ public class WebfluxR2dbcSingleController {
         return commonUtils.handleApi(excuteApi);
     }
 
+    @GetMapping("/getBook")
+    public Flux<ClientInfoEntity> getBook() {
+        return actorService.getBook();
+    }
+
     @GetMapping("/getJoin")
     public Mono<List<ActorDto>> getRentalMoviesProjection() {
         return actorService.getJoin();
@@ -165,13 +172,13 @@ public class WebfluxR2dbcSingleController {
     @PostMapping("/saveData")
     public Mono<ResultDto> saveData() {
 //        ExcuteApi excuteApi = () -> actorService.saveData();
-        ExcuteApi excuteApi = () -> actorService.saveBook();
+        ExcuteApi excuteApi = () -> actorService.saveOracle();
         return commonUtils.handleApi(excuteApi);
     }
 
     @PostMapping("/saveDataBatch")
-    public Mono<Void> saveDataBatch() {
-        return actorService.saveDataBatch();
+    public Flux<Map<String, Object>> saveDataBatch() {
+        return actorService.excuteStore();
     }
 
     @GetMapping("/getDataZip")

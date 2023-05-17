@@ -1,8 +1,6 @@
 package com.demo.repository;
 
-import com.demo.entity.ActorEntity;
-import com.demo.entity.BookEntity;
-import io.r2dbc.spi.Parameter;
+import com.demo.entity.mssql.BookEntity;
 import org.springframework.data.r2dbc.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;

@@ -11,10 +11,10 @@ import javax.annotation.PostConstruct;
 public class DatasourceProperties {
     private DBConfig mssql;
     private DBConfig mariadb;
+    private DBConfig oracle;
 
     @Setter @Getter
     public static class DBConfig {
-        private String driver;
         private String host;
         private Integer port;
         private String database;

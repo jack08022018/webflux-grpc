@@ -29,9 +29,9 @@ public class DatabaseConfig {
     final DatasourceProperties datasourceProperties;
 
     @Bean(name = "dataSource")
-    @ConfigurationProperties("datasource.mariadb.configuration")
+    @ConfigurationProperties("datasource.oracle.configuration")
     public DataSource getDataSource() {
-        var properties = datasourceProperties.getMariadb();
+        var properties = datasourceProperties.getOracle();
         return DataSourceBuilder.create()
                 .url(properties.getUrl())
                 .username(properties.getUsername())
@@ -67,7 +67,7 @@ public class DatabaseConfig {
             final @Qualifier("dataSource")
             DataSource dataSource) {
         var properties = new HashMap<String, Object>();
-        properties.put("hibernate.dialect", datasourceProperties.getMariadb().getDialect());
+        properties.put("hibernate.dialect", datasourceProperties.getOracle().getDialect());
         return builder
                 .dataSource(dataSource)
                 .packages(ActorEntity.class)

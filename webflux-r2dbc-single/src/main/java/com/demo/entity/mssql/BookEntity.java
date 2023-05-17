@@ -1,4 +1,4 @@
-package com.demo.entity;
+package com.demo.entity.mssql;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;

@@ -1,6 +1,5 @@
-package com.demo.entity;
+package com.demo.entity.mariadb;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import org.springframework.data.annotation.Id;
@@ -8,7 +7,6 @@ import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -16,12 +14,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Table("book_type")
-public class BookTypeEntity implements Serializable {
+@Table(name = "class")
+public class ClassEntity implements Serializable {
     @Id
     private Long id;
 
-    @Column("detail")
-    private String detail;
-
+    @Column("class_name")
+    private String className;
 }

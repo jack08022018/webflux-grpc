@@ -6,6 +6,7 @@ import com.demo.dto.RequestDto;
 import com.demo.dto.ResultDto;
 import com.demo.dto.UserData;
 import com.demo.dto.UserDto;
+import com.demo.entity.ClientInfoEntity;
 import com.demo.service.ActorService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
@@ -183,8 +185,8 @@ public class WebfluxJpaController {
 //    }
 
     @GetMapping("/getData")
-    public Mono<ResultDto> getData() throws InterruptedException {
-        return actorService.getDataZip();
+    public Mono<List<ClientInfoEntity>> getData() throws InterruptedException {
+        return actorService.getData();
 //        ExcuteApi excuteApi = () -> actorService.getData();
 //        return handleGetFunction(excuteApi);
     }

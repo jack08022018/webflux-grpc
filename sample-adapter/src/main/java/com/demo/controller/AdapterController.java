@@ -37,7 +37,7 @@ public class AdapterController {
         request.setJsonData(customObjectMapper.writeValueAsString(activityResult));
         var response = customObjectMapper.writeValueAsString(request);
         log.info("\nsend to blocking.RESPONSE: " + response);
-        TimeUnit.SECONDS.sleep(2);
+//        TimeUnit.SECONDS.sleep(2);
         jmsTemplate.convertAndSend("blocking.RESPONSE", response);
     }
 

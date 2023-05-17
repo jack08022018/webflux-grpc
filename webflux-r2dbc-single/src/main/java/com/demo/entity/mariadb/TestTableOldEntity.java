@@ -1,6 +1,5 @@
-package com.demo.entity;
+package com.demo.entity.mariadb;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import org.springframework.data.annotation.Id;
@@ -15,11 +14,15 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Table(name = "class_student")
-public class ClassStudentEntity implements Serializable {
+@Table(name = "test_table_old")
+public class TestTableOldEntity implements Serializable {
     @Id
     private Long id;
 
-    @Column("student_name")
-    private String studentName;
+    @Column("status")
+    private String status;
+
+//    @Column("fake")
+//    private String fake;
+
 }

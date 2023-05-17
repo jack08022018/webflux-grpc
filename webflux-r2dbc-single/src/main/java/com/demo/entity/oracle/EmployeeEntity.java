@@ -1,4 +1,4 @@
-package com.demo.entity;
+package com.demo.entity.oracle;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
@@ -14,15 +14,15 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Table(name = "test_table_old")
-public class TestTableOldEntity implements Serializable {
+@Table("employee")
+public class EmployeeEntity implements Serializable {
     @Id
     private Long id;
 
-    @Column("status")
-    private String status;
+    @Column("client_id")
+    private Long clientId;
 
-//    @Column("fake")
-//    private String fake;
+    @Column("employee_name")
+    private String employeeName;
 
 }

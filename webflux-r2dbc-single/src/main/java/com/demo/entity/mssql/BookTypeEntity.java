@@ -1,5 +1,6 @@
-package com.demo.entity;
+package com.demo.entity.mssql;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import org.springframework.data.annotation.Id;
@@ -7,6 +8,7 @@ import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -14,11 +16,12 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Table(name = "class")
-public class ClassEntity implements Serializable {
+@Table("book_type")
+public class BookTypeEntity implements Serializable {
     @Id
     private Long id;
 
-    @Column("class_name")
-    private String className;
+    @Column("detail")
+    private String detail;
+
 }

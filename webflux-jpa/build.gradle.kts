@@ -24,6 +24,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
 	runtimeOnly("mysql:mysql-connector-java")
+	implementation("com.oracle.database.jdbc:ojdbc8:23.2.0.0")
 //	implementation("org.lognet:grpc-spring-boot-starter-webflux:2.8.0")
 
 	implementation("org.apache.commons:commons-lang3:3.12.0")

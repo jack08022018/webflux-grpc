@@ -5,14 +5,14 @@ import com.demo.dto.ActivityResult;
 import com.demo.dto.ActorDto;
 import com.demo.dto.ResultDto;
 import com.demo.dto.TransactionRequest;
-import com.demo.entity.BookTypeEntity;
-import com.demo.entity.ClassEntity;
-import com.demo.entity.RentalEntity;
-import com.demo.entity.TestTableOldEntity;
+import com.demo.entity.mssql.BookTypeEntity;
+import com.demo.entity.mariadb.ClassEntity;
+import com.demo.entity.mariadb.TestTableOldEntity;
+import com.demo.entity.oracle.ClientInfoEntity;
+import com.demo.entity.oracle.EmployeeEntity;
 import com.demo.repository.*;
 import com.demo.utils.CommonUtils;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
@@ -26,7 +26,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -44,19 +44,29 @@ public class ActorServiceImpl implements ActorService {
     final ClassRepository classRepository;
     final BookTypeRepository bookTypeRepository;
     final BookRepository bookRepository;
+    final ClientInfoRepository clientInfoRepository;
+    final EmployeeRepository employeeRepository;
 
     @Override
     public Mono<ResultDto> getData() {
-        Mono<List<ActorDto>> response1 = actorRepository.findCTE().collectList();
-        Mono<RentalEntity> response2 = rentalRepository.findById(152);
+//        Mono<List<ActorDto>> response1 = actorRepository.findCTE().collectList();
+//        Mono<RentalEntity> response2 = rentalRepository.findById(152);
 
-//        Mono<String> response1 = Mono.just("");
+        Mono<String> response1 = Mono.just("");
 //        Mono<BookTypeEntity> response2 = bookTypeRepository.findById(1L);
-        return Mono.zip(response1, response2)
-                .map(tuple -> ResultDto.builder()
-                        .data1(tuple.getT1())
-                        .data2(tuple.getT2())
-                        .build());
+        return Mono.just(ResultDto.builder()
+                        .data2(clientInfoRepository.findAll().collectList())
+                .build());
+//        return Mono.zip(response1, response2)
+//                .map(tuple -> ResultDto.builder()
+//                        .data1(tuple.getT1())
+//                        .data2(tuple.getT2())
+//                        .build());
+    }
+
+    @Override
+    public Flux<ClientInfoEntity> getBook() {
+        return clientInfoRepository.findAll();
     }
 
     public Mono<Void> saveDatabaseClient() {
@@ -117,15 +127,26 @@ public class ActorServiceImpl implements ActorService {
                 .then(Mono.just(ResultDto.builder()
                         .responseStatus(ResponseStatus.SUCCESS.getCode())
                         .build()));
-//        var entity = BookEntity.builder()
-//                .id(2L)
-//                .bookTypeId(1L)
-//                .bookName("Mathematic")
-//                .build();
-//        return bookRepository.save(entity)
-//                .then(Mono.just(ResultDto.builder()
-//                        .responseStatus(ResponseStatus.SUCCESS.getCode())
-//                        .build()));
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Mono<ResultDto> saveOracle() {
+        var employee = EmployeeEntity.builder()
+                .id(1L)
+                .clientId(1L)
+                .employeeName("Jack")
+                .build();
+        return clientInfoRepository.findById(1L)
+                .doOnNext(s -> s.setClientName("PMH"))
+                .flatMap(clientInfoRepository::save)
+                .flatMap(s -> employeeRepository.save(employee))
+//                .doOnNext(s -> {
+//                    int a = 1/0;
+//                })
+                .then(Mono.just(ResultDto.builder()
+                        .responseStatus(ResponseStatus.SUCCESS.getCode())
+                        .build()));
     }
 
     @Override
@@ -188,6 +209,18 @@ public class ActorServiceImpl implements ActorService {
                         .data1(tuple.getT1())
                         .data2(tuple.getT2())
                         .build());
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Flux<Map<String, Object>> excuteStore() {
+//        return entityTemplate.getDatabaseClient()
+        return databaseClient
+                .sql("CALL film_in_stock(?, ?, @p_film_count)")
+                .bind(0, 1)
+                .bind(1, 1)
+//                .as(String.class)
+                .fetch().all();
     }
 
 }

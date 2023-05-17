@@ -1,4 +1,4 @@
-package com.demo.entity;
+package com.demo.entity.mariadb;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;

@@ -2,11 +2,9 @@ package com.demo.service;
 
 import com.demo.constant.ResponseStatus;
 import com.demo.dto.*;
+import com.demo.entity.ClientInfoEntity;
 import com.demo.entity.TestTableEntity;
-import com.demo.repository.ActorRepository;
-import com.demo.repository.CountryRepository;
-import com.demo.repository.RentalNewRepository;
-import com.demo.repository.TestTableRepository;
+import com.demo.repository.*;
 import com.demo.utils.CommonUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +29,7 @@ public class ActorServiceImpl implements ActorService {
     final TestTableRepository testTableRepository;
     final CommonUtils commonUtils;
     final WebClient orchesWebfluxClient;
+    final ClientInfoRepository clientInfoRepository;
 
     @Override
     public Mono<ResultDto> getDataZip() throws InterruptedException {
@@ -50,6 +49,11 @@ public class ActorServiceImpl implements ActorService {
                         .data(tuple.getT1())
                         .db(tuple.getT2())
                         .build());
+    }
+
+    @Override
+    public Mono<List<ClientInfoEntity>> getData() throws InterruptedException {
+        return Mono.just(clientInfoRepository.findAll());
     }
 
     @Override

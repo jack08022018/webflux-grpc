@@ -23,8 +23,7 @@ spring:
 datasource:
   mssql:
 #    url: jdbc:sqlserver://localhost:1433;encrypt=true;trustServerCertificate=true;databaseName=sakila
-    enabled: true
-    driver: mssql
+    enabled: false
     host: localhost
     port: 1433
     database: sakila
@@ -33,12 +32,19 @@ datasource:
     timeout: 10
   mariadb:
     enabled: false
-    driver: mariadb
     host: localhost
     port: 3308
     database: sakila
     user: root
     password: 123456
+    timeout: 10
+  oracle:
+    enabled: true
+    host: localhost
+    port: 1521
+    database: xe
+    user: SMARTER_PRODUCT_FEE
+    password: SMARTER_PRODUCT_FEE
     timeout: 10
 
 logging:
