@@ -139,10 +139,14 @@ public class ActorServiceImpl implements ActorService {
                 .build();
         return clientInfoRepository.findById(1L)
                 .doOnNext(s -> s.setClientName("PMH"))
-                .flatMap(clientInfoRepository::save)
+//                .flatMap(clientInfoRepository::save)
                 .flatMap(s -> employeeRepository.save(employee))
+                .flatMap(s -> databaseClient
+                        .sql("update client_info set client_name = :message where id = 1")
+                        .bind("message", "PMH")
+                        .then())
 //                .doOnNext(s -> {
-//                    int a = 1/0;
+////                    int a = 1/0;
 //                })
                 .then(Mono.just(ResultDto.builder()
                         .responseStatus(ResponseStatus.SUCCESS.getCode())
