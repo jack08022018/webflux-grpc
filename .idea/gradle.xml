@@ -5,6 +5,24 @@
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
         <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/readFile" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/readFile" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/receive" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/receive" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$/sample-adapter" />
         <option name="gradleHome" value="$PROJECT_DIR$/../../soft/gradle-7.6-all/gradle-7.6" />
         <option name="modules">
@@ -40,6 +58,15 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/sample-service" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/sender" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/sender" />
           </set>
         </option>
       </GradleProjectSettings>

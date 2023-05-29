@@ -1,0 +1,35 @@
+server:
+  port: 8081
+  servlet.context-path: /sender
+  undertow.max-http-post-size: 0
+spring:
+  application.name: sender
+  main.allow-bean-definition-overriding: true
+  jackson.default-property-inclusion: non_absent
+
+grpc:
+  server.port: 8001
+  client:
+    receive-service:
+      address: 'static://localhost:8002'
+      enableKeepAlive: true
+      keepAliveWithoutCalls: true
+      negotiationType: plaintext
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: DEBUG
+    org.springframework.web.FilterChainProxy: DEBUG
+    org.springframework.web.client.RestTemplate: DEBUG
+    org.springframework.security: DEBUG
+    org.springframework.boot.autoconfigure: INFO
+    org.springframework.r2dbc: TRACE
+#    org.springframework.r2dbc: DEBUG
+
+    org.hibernate.SQL: DEBUG
+#    org.hibernate.type.descriptor.sql: trace
+#    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+#    org.springframework.data.r2dbc: DEBUG
+#    io.r2dbc.mariadb.QUERY: DEBUG # for queries
+#    io.r2dbc.mariadb.PARAM: DEBUG # for parameters
