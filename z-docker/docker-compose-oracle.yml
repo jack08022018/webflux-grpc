@@ -18,50 +18,14 @@ services:
 #        - ibmmq:/data/ibmmq
 #      container_name: ibmmq
 
-  redis:
-    image: redis:latest
-    container_name: redis-server
-    ports:
-      - '6379:6379'
-#
-  activemq:
-    image: 'rmohr/activemq'
-    ports:
-      - '61616:61616'
-      - '8161:8161'
-    container_name: activemq
-
-#  mongoDb:
-#    image: 'mongo:latest'
-#    ports:
-#      - '27017:27017'
-#    environment:
-#      MONGO_INITDB_ROOT_USERNAME: root
-#      MONGO_INITDB_ROOT_PASSWORD: 123456
-#    container_name: mongoDb
-
-#  oracle:
-#    image: 'oraclelinux:9'
-#    container_name: oracleDb
-##    image: container-registry.oracle.com/database/enterprise:latest
-#    ports:
-#      - "1521:1521"
-#    environment:
-#      ORACLE_SID: ORCLCDB
-#      ORACLE_PDB: ORCLPDB1
-#      ORACLE_PWD: 123456
-#      MONGO_INITDB_ROOT_PASSWORD: 123456
-#    volumes:
-#      - oracle-data:/opt/oracle/oradata
-#      - oracle-backup:/opt/oracle/backup
-
   oracle:
     image: gvenzl/oracle-xe
-    container_name: oracleDb
+    container_name: oracle
     ports:
       - "1521:1521"
     environment:
       ORACLE_PASSWORD: 123456
+#      root_user: system
 #  docker run --name oracledb -p 1521:1521 -e ORACLE_PASSWORD=123456 gvenzl/oracle-xe
 
 #  mssql:
@@ -77,31 +41,6 @@ services:
 ##      - ./bk:/var/opt/mssql/backup      # thư  mục chứa file backup
 #    ports:
 #      - '1433:1433'
-
-#  mariadb:
-#    image: mariadb
-#    environment:
-#      MYSQL_ROOT_PASSWORD: 123456
-#      MYSQL_DATABASE: sakila
-#      MYSQL_USER: admin
-#      MYSQL_PASSWORD: 123456
-#    restart: on-failure
-#    ports:
-#      - "3308:3306"
-##    command: ['--lower_case_table_names=1']
-#    command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci', '--lower_case_table_names=1']
-
-#  mariadb-slave:
-#    image: mariadb
-#    environment:
-#      MYSQL_ROOT_PASSWORD: 123456
-#      MYSQL_DATABASE: sakila
-#      MYSQL_USER: admin
-#      MYSQL_PASSWORD: 123456
-#    restart: on-failure
-#    ports:
-#      - "3309:3306"
-#    command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci', '--lower_case_table_names=1']
 
 #services:
 #  grpc-service:
