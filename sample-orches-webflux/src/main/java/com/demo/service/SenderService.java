@@ -5,5 +5,5 @@ import com.demo.dto.TransactionRequest;
 import reactor.core.publisher.Mono;
 
 public interface SenderService {
-    Mono<ActivityResult> nonBlocking(TransactionRequest dto) throws Exception;
+    Mono<ActivityResult> nonBlocking(TransactionRequest dto);
 }

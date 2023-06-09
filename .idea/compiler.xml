@@ -14,7 +14,7 @@
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-configuration-processor/2.7.7/483f6acb3b0aff6c3d3dc99e8b8f390fa893d0a2/spring-boot-configuration-processor-2.7.7.jar" />
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.24/13a394eed5c4f9efb2a6d956e2086f1d81e857d9/lombok-1.18.24.jar" />
         </processorPath>
-        <module name="webflux-r2dbc-single.main" />
+        <module name="com.readFile.main" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -22,16 +22,21 @@
       <module name="core-library.main" target="19" />
       <module name="core-library.test" target="19" />
       <module name="demo" target="17" />
-      <module name="receive" target="19" />
-      <module name="receive.main" target="19" />
-      <module name="receive.test" target="19" />
-      <module name="sender" target="19" />
+      <module name="emira" target="19" />
+      <module name="emira.main" target="19" />
+      <module name="emira.test" target="19" />
+      <module name="extjs" target="17" />
+      <module name="extjs.aotMain" target="17" />
+      <module name="extjs.aotTest" target="17" />
+      <module name="extjs.main" target="17" />
+      <module name="extjs.test" target="17" />
+      <module name="jpa" target="19" />
+      <module name="jpa.main" target="19" />
+      <module name="jpa.test" target="19" />
       <module name="sender-maven" target="1.5" />
       <module name="sender-web" target="19" />
       <module name="sender-web.main" target="19" />
       <module name="sender-web.test" target="19" />
-      <module name="sender.main" target="19" />
-      <module name="sender.test" target="19" />
       <module name="webflux-grpc.sender-web" target="19" />
       <module name="webflux-grpc.sender-web.main" target="19" />
       <module name="webflux-grpc.sender-web.test" target="19" />
