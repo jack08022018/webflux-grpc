@@ -1,14 +1,14 @@
 version: '2'
 
 services:
-  webflux-r2dbc-single:
+  grpc-service:
     build:
-      context: webflux-r2dbc-single
-      dockerfile: Dockerfile
-    container_name: webflux-r2dbc-single
-    image: webflux-r2dbc-single:latest
+      context: grpc
+      dockerfile: ../webflux-r2dbc-single/Dockerfile
+    container_name: grpc-service
+    image: sacom-grpc:latest
     ports:
-      - "9097:9097"
+      - "9000:9000"
 
 #  orchestrator-service:
 #    build:
@@ -18,7 +18,7 @@ services:
 #    image: sacom-orchestrator:latest
 #    ports:
 #      - "9000:9000"
-
+#
 #  receiver-service:
 #    build:
 #      context: receiver-service
@@ -27,7 +27,7 @@ services:
 #    image: sacom-receiver-service:latest
 #    ports:
 #      - "9002:9002"
-
+#
 #  sender-service:
 #    build:
 #      context: sender-service
@@ -36,7 +36,7 @@ services:
 #    image: sacom-sender:latest
 #    ports:
 #      - "9001:9001"
-
+#
 #  orches-service:
 #    build:
 #      context: orches-service

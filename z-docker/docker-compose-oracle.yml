@@ -1,14 +1,28 @@
 version: '2'
+volumes:
+  oracle-data:
+  oracle-backup:
 
 services:
-  webflux-r2dbc-single:
-    build:
-      context: webflux-r2dbc-single
-      dockerfile: Dockerfile
-    container_name: webflux-r2dbc-single
-    image: webflux-r2dbc-single:latest
+  oracle:
+    image: gvenzl/oracle-xe
+    container_name: oracle
     ports:
-      - "9097:9097"
+      - "1521:1521"
+    environment:
+      ORACLE_PASSWORD: 123456
+#      root_user: system
+#  docker run --name oracledb -p 1521:1521 -e ORACLE_PASSWORD=123456 gvenzl/oracle-xe
+
+#services:
+#  grpc-service:
+#    build:
+#      context: grpc
+#      dockerfile: Dockerfile
+#    container_name: grpc-service
+#    image: sacom-grpc:latest
+#    ports:
+#      - "9000:9000"
 
 #  orchestrator-service:
 #    build:

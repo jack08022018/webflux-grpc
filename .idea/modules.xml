@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.webflux-r2dbc-single.main.iml" filepath="$PROJECT_DIR$/.idea/modules/com.webflux-r2dbc-single.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/sample-adapter.main.iml" filepath="$PROJECT_DIR$/.idea/modules/sample-adapter.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/sample-orches-web.main.iml" filepath="$PROJECT_DIR$/.idea/modules/sample-orches-web.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/sample-orches-webflux.main.iml" filepath="$PROJECT_DIR$/.idea/modules/sample-orches-webflux.main.iml" />
